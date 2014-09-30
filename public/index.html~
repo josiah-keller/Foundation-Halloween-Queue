@@ -1,0 +1,19 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Foundation Open House</title>
+  <meta name="description" content="Foundation Halloween">
+  <meta name="author" content="Andrew Smith">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+</head>
+
+<body>
+  <h1>Halloween Open House</h1>
+  <p>Welcome</p>
+  <script src="js/scripts.js"></script>
+</body>
+</html>

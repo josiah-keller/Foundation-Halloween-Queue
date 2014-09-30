@@ -1,0 +1,11 @@
+{
+  "name": "halloween_server",
+  "description": "Foundation Halloween Server",
+  "version": "0.0.1",
+  "private": "true",
+  "dependencies": {
+    "express": "4.x",
+    "socket.io": "~1.1.0",
+    "jquery": "~2.1.1"
+  }
+}
