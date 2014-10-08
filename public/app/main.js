@@ -16,7 +16,8 @@ define(function (require) {
    system.debug(true);
  
    app.title = 'Foundation Halloween Open House';
- 
+   
+   app.data = io();
    app.configurePlugins({
      router:true,
      dialog: true
