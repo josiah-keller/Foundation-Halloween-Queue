@@ -1,12 +1,29 @@
 <div id="queue">
+    <button class="btn btn-success fa-2x pull-left" data-bind="click: addGroup"><i class="fa fa-group"></i> Add Group</button>
+    <button class="btn btn-primary fa-2x pull-right" data-bind="disable: status()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
+    <br/><br/>
+    <div class="text-center">
+        <!--<button class="btn btn-danger" data-bind="click: function(){status('stop')}">STOP</button>-->
+        <span class="fa-stack fa-lg">
+            <!-- ko ifnot: status() == 'stop' -->
+            <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':status()=='good','text-warning':status()=='warn'}"></i>
+            <i class="fa fa-stack-1x fa-inverse" data-bind="css: {'fa-thumbs-o-up':status()=='good','fa-spin fa-cog':status()=='warn'}"></i>
+            <!-- /ko -->
+            <!-- ko if: status() == 'stop' -->
+            <i class="fa fa-ban fa-stack-2x text-danger"></i>
+            <!-- /ko -->
+        </span>
+        <!--<button class="btn btn-success" data-bind="click: function(){status('good')}">GOOD</button>-->
+    </div>
     <div id="currentGroup" class="container">
         <h2 class="col-sm-6">Current Group:</h2>
-    <i class="fa fa-group btn btn-success pull-right" data-bind="click: addGroup"> Add Group</i>
         <ul class="list-group">
+            <!-- ko if: currentGroup() -->
             <li class="list-group-item col-sm-12">
-                <h4 class="col-sm-6">Group 1</h4>
-                <h4 class="pull-right">123-456-7890</h4>
+                <h4 class="col-sm-6" data-bind="text: currentGroup().name"></h4>
+                <h4 class="pull-right" data-bind="text: currentGroup().phoneNumber"></h4>
             </li>
+            <!-- /ko -->
         </ul>
     </div>
     <br/>
@@ -14,10 +31,12 @@
         <h2 class="col-sm-6">Next Group:</h2>
         <i class="fa fa-bell-o btn btn-primary pull-right" data-bind="click: notifyGroup"> Notify Group Again</i>
         <ul class="list-group">
+            <!-- ko if: nextGroup() -->
             <li class="list-group-item col-sm-12">
-                <h4 class="col-sm-6">Group 2</h4>
-                <h4 class="pull-right">123-456-7890</h4>
+                <h4 class="col-sm-6" data-bind="text: nextGroup().name"></h4>
+                <h4 class="pull-right" data-bind="text: nextGroup().phoneNumber"></h4>
             </li>
+            <!-- /ko -->
         </ul>
     </div>
     <br/>

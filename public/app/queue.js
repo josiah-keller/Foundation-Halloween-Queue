@@ -11,6 +11,8 @@ define(function(require) {
         self.currentGroup = ko.observable();
         self.nextGroup = ko.observable();
         self.queuedGroups = ko.observableArray();
+        
+        self.status = ko.observable('stop');
 
         self.addGroup = function () {
             dialog.show("../addGroup", null, 'bootstrap').then(function (data) {
@@ -40,6 +42,14 @@ define(function(require) {
                     notifyAlert.addClass('fadeOutUp');
                 });
             }
+        };
+        
+        self.attached = function () {
+            self.queuedGroups.subscribe(function () {
+                if (self.queuedGroups().length > 0 && self.nextGroup() == null) {
+                    self.nextGroup(self.queuedGroups.shift());
+                }
+            });
         };
     };
 
