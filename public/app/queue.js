@@ -8,6 +8,12 @@ define(function(require) {
     function Queue () {
         var self = this;
 
+        app.data.on("state", function(data){
+            self.currentGroup(data.currentGroup);
+            self.nextGroup(data.nextGroup);
+            self.queuedGroups(data.queue);
+        });
+
         self.currentGroup = ko.observable();
         self.nextGroup = ko.observable();
         self.queuedGroups = ko.observableArray();
@@ -17,10 +23,10 @@ define(function(require) {
         self.addGroup = function () {
             dialog.show("../addGroup", null, 'bootstrap').then(function (data) {
                 if (data.createGroup) {
-                    self.queuedGroups.push({
-                        name: ko.observable(data.name()),
-                        phoneNumber: ko.observable(data.phoneNumber())
-                    });
+                    group = {};
+                    group.name = data.name();
+                    group.phoneNumber = data.phoneNumber();
+                    app.data.emit("add group", group);
                 }
             });
         };
@@ -43,8 +49,9 @@ define(function(require) {
                 });
             }
         };
-        
-        self.attached = function () {
+
+        self.attached = function(){
+            app.data.emit("getState");
             self.queuedGroups.subscribe(function () {
                 if (self.queuedGroups().length > 0 && self.nextGroup() == null) {
                     self.nextGroup(self.queuedGroups.shift());
