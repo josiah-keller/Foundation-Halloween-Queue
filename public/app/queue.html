@@ -1,0 +1,37 @@
+<div id="queue">
+    <div id="currentGroup" class="container">
+        <h2 class="col-sm-6">Current Group:</h2>
+    <i class="fa fa-group btn btn-success pull-right" data-bind="click: addGroup"> Add Group</i>
+        <ul class="list-group">
+            <li class="list-group-item col-sm-12">
+                <h4 class="col-sm-6">Group 1</h4>
+                <h4 class="pull-right">123-456-7890</h4>
+            </li>
+        </ul>
+    </div>
+    <br/>
+    <div id="nextGroup" class="container">
+        <h2 class="col-sm-6">Next Group:</h2>
+        <i class="fa fa-bell-o btn btn-primary pull-right" data-bind="click: notifyGroup"> Notify Group Again</i>
+        <ul class="list-group">
+            <li class="list-group-item col-sm-12">
+                <h4 class="col-sm-6">Group 2</h4>
+                <h4 class="pull-right">123-456-7890</h4>
+            </li>
+        </ul>
+    </div>
+    <br/>
+    <div id="queuedGroups" class="container">
+        <h2 class="col-sm-3">Queued Groups:</h2>
+        <ul class="list-group" data-bind="foreach: queuedGroups">
+            <li class="list-group-item col-sm-12">
+                <h4 class="col-sm-6" data-bind="text: name"></h4>
+                <h4 class="pull-right" data-bind="text: phoneNumber"></h4>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal"></div>
+
+<div id="textNotification" class="alert alert-info fade out affix-top" role="alert">You have sent a notification</div>

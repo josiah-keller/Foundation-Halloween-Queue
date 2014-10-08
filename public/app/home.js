@@ -1,32 +1,32 @@
 define(function(require) {
     var app = require('durandal/app'),
-        system = require('durandal/system'),
-        ko = require('knockout');
+        dialog = require('plugins/dialog'),
+        system = require('durandal/system');
+    require('../lib/bootstrap/js/bootstrap');
 
-
-    var home = function(){
-	var self = this;
-	self.state = ko.observable("");
-
-	self.socket = app.data;
-	self.socket.on('state', function(data){
-	    console.log(data);
-	    self.state(data);
-	});
-
-	self.add = function(){
-	    self.socket.emit('add group', {name: "Bob"});
-	}
-
-	self.remove = function(){
-	    self.socket.emit('remove group', 0);
-	}
-
-	self.next = function(){
-	    self.socket.emit('next');
-	}
+    var self = {
 
     }
 
-    return home;
+    //Context for showing bootstrap modal
+    dialog.addContext('bootstrap', {
+        addHost: function (theDialog) {
+            theDialog.host = $('#myModal').get(0);
+        },
+        removeHost: function (theDialog) {
+            setTimeout(function () {
+                $('#myModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }, 200);
+
+        },
+        compositionComplete: function (child, parent, context) {
+            var theDialog = dialog.getDialog(context.model);
+            $('#myModal').modal('show');
+        },
+        attached: null
+    });
+
+    return self;
 });
