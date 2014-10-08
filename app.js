@@ -7,6 +7,8 @@ var sqlite3 = require('sqlite3').verbose();
 
 var HalloweenQueue = require('./queue.js').HalloweenQueue;
 
+var port = process.env.PORT || 3000;
+
 function start(){
     
     var queue = new HalloweenQueue();
@@ -26,7 +28,6 @@ function start(){
     app.use('/', express.static(__dirname+'/public'));
 
     io.on('connection', function(socket){
-        console.log("a user connected");
         socket.on('disconnect', function(){
             console.log('user disconnected');
         });
@@ -51,11 +52,9 @@ function start(){
         });
     });
 
-    http.listen(3000, function(){
+    http.listen(port, function(){
         console.log('Listening on port %d', http.address().port);
     });
-
-    main();
 
     function saveSendStatus(socket){
         db.serialize(function (){
@@ -73,10 +72,6 @@ function start(){
         console.log(data);
     }
 
-}
-
-function main(){
-    
 }
  
 start();

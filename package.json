@@ -2,6 +2,7 @@
   "name": "halloween_server",
   "description": "Foundation Halloween Server",
   "version": "0.0.1",
+  "main":"app.js",
   "private": "true",
   "dependencies": {
     "express": "4.x",
