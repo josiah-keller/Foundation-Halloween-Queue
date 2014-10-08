@@ -9,6 +9,7 @@ define(function(require) {
         var self = this;
 
         app.data.on("state", function(data){
+            console.log('state change', data.queue);
             self.currentGroup(data.currentGroup);
             self.nextGroup(data.nextGroup);
             self.queuedGroups(data.queue);
@@ -26,6 +27,7 @@ define(function(require) {
                     group = {};
                     group.name = data.name();
                     group.phoneNumber = data.phoneNumber();
+                    console.log(group);
                     app.data.emit("add group", group);
                 }
             });
@@ -52,11 +54,6 @@ define(function(require) {
 
         self.attached = function(){
             app.data.emit("getState");
-            self.queuedGroups.subscribe(function () {
-                if (self.queuedGroups().length > 0 && self.nextGroup() == null) {
-                    self.nextGroup(self.queuedGroups.shift());
-                }
-            });
         };
     };
 
