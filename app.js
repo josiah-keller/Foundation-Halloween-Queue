@@ -49,12 +49,11 @@ function start(){
 	socket.on('getState', function(){//get current status
 	    socket.emit('state', queue.getState());
 	});
+    });
 
     http.listen(3000, function(){
         console.log('Listening on port %d', http.address().port);
     });
-
-    main();
 
     function saveSendStatus(socket){
         db.serialize(function (){
@@ -72,10 +71,6 @@ function start(){
         console.log(data);
     }
 
-}
-
-function main(){
-    
 }
  
 start();
