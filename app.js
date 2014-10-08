@@ -26,7 +26,6 @@ function start(){
     app.use('/', express.static(__dirname+'/public'));
 
     io.on('connection', function(socket){
-        console.log("a user connected");
         socket.on('disconnect', function(){
 	    console.log('user disconnected');
 	});
@@ -51,7 +50,7 @@ function start(){
 	});
     });
 
-    http.listen(3000, function(){
+    http.listen(80, function(){
         console.log('Listening on port %d', http.address().port);
     });
 
