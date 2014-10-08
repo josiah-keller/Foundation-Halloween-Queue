@@ -9,44 +9,45 @@ var HalloweenQueue = require('./queue.js').HalloweenQueue;
 
 function start(){
     
+    var queue = new HalloweenQueue();
+
     var file = "database.db";
     var exists = fs.existsSync(file);
-    
+    console.log(exists);
     var db = new sqlite3.Database(file);
     db.serialize(function(){
 	if(!exists){
-	    db.run("CREATE TABLE queue (state TEXT, time DATETIME)");
+	    db.run("CREATE TABLE queue ('state' TEXT, 'time' DATETIME)");
+	}else{
+	    db.each("SELECT state FROM queue WHERE rowid = (SELECT MAX(rowid) FROM queue)", loaddata);
 	}
     });
-    
-    var queue = new HalloweenQueue();
 
     app.use('/', express.static(__dirname+'/public'));
 
     io.on('connection', function(socket){
 	console.log("a user connected");
-	socket.emit('connected', { hello: "world"});
 	socket.on('disconnect', function(){
 	    console.log('user disconnected');
 	});
 
 	socket.on('add group', function(group){ //add group
 	    queue.add(group);
-	    socket.emit('state', queue.getState());
+	    saveSendStatus(socket);
 	});
 
 	socket.on('remove group', function(index){// remove group
 	    queue.remove(index);
-	    socket.emit('state', queue.getState());
+	    saveSendStatus(socket);
 	});
 
 	socket.on('next', function(){//notify and move groups
 	    queue.next();
-	    socket.emit('state', queue.getState());
+	    saveSendStatus(socket);
 	});
 
-	socket.on('getData', function(){//get current status
-
+	socket.on('getState', function(){//get current status
+	    socket.emit('state', queue.getState());
 	});
     });
 
@@ -55,6 +56,23 @@ function start(){
     });
 
     main();
+
+    function saveSendStatus(socket){
+	db.serialize(function (){
+	    db.run("INSERT INTO queue (state, time) VALUES ( ? , datetime())",JSON.stringify(queue.getState()), err);
+	});
+	socket.emit('state', queue.getState());
+    }
+
+    function loaddata(err, data){
+	data = JSON.parse(data.state)
+	queue.loadState(data);
+    }
+
+    function err(data){
+	console.log(data);
+    }
+
 }
 
 function main(){
