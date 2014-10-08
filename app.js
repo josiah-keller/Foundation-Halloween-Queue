@@ -16,11 +16,11 @@ function start(){
     console.log(exists);
     var db = new sqlite3.Database(file);
     db.serialize(function(){
-	if(!exists){
-	    db.run("CREATE TABLE queue ('state' TEXT, 'time' DATETIME)");
-	}else{
-	    db.each("SELECT state FROM queue WHERE rowid = (SELECT MAX(rowid) FROM queue)", loaddata);
-	}
+        if(!exists){
+            db.run("CREATE TABLE queue ('state' TEXT, 'time' DATETIME)");
+        }else{
+            db.each("SELECT state FROM queue WHERE rowid = (SELECT MAX(rowid) FROM queue)", loaddata);
+        }
     });
 
     app.use('/', express.static(__dirname+'/public'));
@@ -28,27 +28,28 @@ function start(){
     io.on('connection', function(socket){
         console.log("a user connected");
         socket.on('disconnect', function(){
-	    console.log('user disconnected');
-	});
+            console.log('user disconnected');
+        });
 
-	socket.on('add group', function(group){ //add group
-	    queue.add(group);
-	    saveSendStatus(socket);
-	});
+        socket.on('add group', function(group){ //add group
+            queue.add(group);
+            saveSendStatus(socket);
+        });
 
-	socket.on('remove group', function(index){// remove group
-	    queue.remove(index);
-	    saveSendStatus(socket);
-	});
+        socket.on('remove group', function(index){// remove group
+            queue.remove(index);
+            saveSendStatus(socket);
+        });
 
-	socket.on('next', function(){//notify and move groups
-	    queue.next();
-	    saveSendStatus(socket);
-	});
+        socket.on('next', function(){//notify and move groups
+            queue.next();
+            saveSendStatus(socket);
+        });
 
-	socket.on('getState', function(){//get current status
-	    socket.emit('state', queue.getState());
-	});
+        socket.on('getState', function(){//get current status
+            socket.emit('state', queue.getState());
+        });
+    });
 
     http.listen(3000, function(){
         console.log('Listening on port %d', http.address().port);
