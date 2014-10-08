@@ -7,6 +7,8 @@ var sqlite3 = require('sqlite3').verbose();
 
 var HalloweenQueue = require('./queue.js').HalloweenQueue;
 
+var port = process.env.PORT || 3000;
+
 function start(){
     
     var queue = new HalloweenQueue();
@@ -50,7 +52,7 @@ function start(){
 	});
     });
 
-    http.listen(80, function(){
+    http.listen(port, function(){
         console.log('Listening on port %d', http.address().port);
     });
 
