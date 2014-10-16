@@ -1,6 +1,6 @@
 <div id="queue">
     <div class="text-center">
-        <button class="btn btn-danger" data-bind="click: function(){mazeStatus('stop')}">STOP</button>
+        <button class="btn btn-danger" data-bind="click: mazeStatusStop">STOP</button>
         <span class="fa-stack fa-lg">
             <!-- ko ifnot: mazeStatus() == 'stop' -->
             <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':mazeStatus()=='good','text-warning':mazeStatus()=='warn'}"></i>
@@ -10,7 +10,7 @@
             <i class="fa fa-ban fa-stack-2x text-danger"></i>
             <!-- /ko -->
         </span>
-        <button class="btn btn-success" data-bind="click: function(){mazeStatus('good')}">GOOD</button>
+        <button class="btn btn-success" data-bind="click: mazeStatusGood">GOOD</button>
     </div>
     <div class="col-sm-9">
         <button class="btn btn-primary fa-2x pull-left" data-bind="click: addGroup"><i class="fa fa-group"></i> Add Group</button>
