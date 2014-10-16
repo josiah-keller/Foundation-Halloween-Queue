@@ -19,7 +19,7 @@ define(function(require) {
         self.nextGroup = ko.observable();
         self.queuedGroups = ko.observableArray();
         
-        self.status = ko.observable('stop');
+        self.mazeStatus = ko.observable('stop');
 
         self.addGroup = function () {
             dialog.show("../addGroup", null, 'bootstrap').then(function (data) {
@@ -37,7 +37,7 @@ define(function(require) {
         };
         
         self.sendGroup = function () {
-            self.status('warn');
+            self.mazeStatus('warn');
             app.data.emit("next", true);
         };
         
@@ -66,6 +66,7 @@ define(function(require) {
                     notifyAlert.addClass('fadeOutUp');
                 });
             }
+            app.data.emit("send reminder text");
         };
         
         self.showIcons = function (data, event) {
