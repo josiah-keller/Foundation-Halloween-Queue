@@ -1,16 +1,16 @@
 <div id="queue">
     <div class="text-center">
-        <button class="btn btn-danger" data-bind="click: function(){status('stop')}">STOP</button>
+        <button class="btn btn-danger" data-bind="click: function(){mazeStatus('stop')}">STOP</button>
         <span class="fa-stack fa-lg">
-            <!-- ko ifnot: status() == 'stop' -->
-            <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':status()=='good','text-warning':status()=='warn'}"></i>
-            <i class="fa fa-stack-1x fa-inverse" data-bind="css: {'fa-thumbs-o-up':status()=='good','fa-spin fa-cog':status()=='warn'}"></i>
+            <!-- ko ifnot: mazeStatus() == 'stop' -->
+            <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':mazeStatus()=='good','text-warning':mazeStatus()=='warn'}"></i>
+            <i class="fa fa-stack-1x fa-inverse" data-bind="css: {'fa-thumbs-o-up':mazeStatus()=='good','fa-spin fa-cog':mazeStatus()=='warn'}"></i>
             <!-- /ko -->
-            <!-- ko if: status() == 'stop' -->
+            <!-- ko if: mazeStatus() == 'stop' -->
             <i class="fa fa-ban fa-stack-2x text-danger"></i>
             <!-- /ko -->
         </span>
-        <button class="btn btn-success" data-bind="click: function(){status('good')}">GOOD</button>
+        <button class="btn btn-success" data-bind="click: function(){mazeStatus('good')}">GOOD</button>
     </div>
     <div class="col-sm-9">
         <button class="btn btn-primary fa-2x pull-left" data-bind="click: addGroup"><i class="fa fa-group"></i> Add Group</button>
@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="col-sm-3 text-center">
-        <button class="btn btn-success fa-2x" data-bind="click: sendGroup, disable: status()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
+        <button class="btn btn-success fa-2x" data-bind="click: sendGroup, disable: mazeStatus()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
         <br/><br/>
         <button class="btn btn-primary" data-bind="click: shiftGroupsUp"><i class="fa fa-2x fa-chevron-up"></i><h4>Shift Groups</h4><h6>(No Notification)</h6></button>
         <br/><br/>
