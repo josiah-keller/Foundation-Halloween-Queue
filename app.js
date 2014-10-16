@@ -15,11 +15,10 @@ function start(){
 
     var file = "database.db";
     var exists = fs.existsSync(file);
-    console.log(exists);
     var db = new sqlite3.Database(file);
     db.serialize(function(){
         if(!exists){
-            db.run("CREATE TABLE queue ('state' TEXT, 'time' DATETIME)");
+            db.run("CREATE TABLE queue ('op' TEXT, 'state' TEXT, 'time' DATETIME)");
         }else{
             db.each("SELECT state FROM queue WHERE rowid = (SELECT MAX(rowid) FROM queue)", loaddata);
         }
@@ -34,21 +33,31 @@ function start(){
 
         socket.on('add group', function(group){ //add group
             queue.add(group);
-            saveSendStatus(socket);
+            saveSendStatus(socket,'ADD');
         });
 
         socket.on('remove group', function(index){// remove group
             queue.remove(index);
-            saveSendStatus(socket);
+            saveSendStatus(socket,'REMOVE');
         });
 
         socket.on('next', function(){//notify and move groups
             queue.next();
-            saveSendStatus(socket);
+            saveSendStatus(socket, 'NEXT');
         });
 
         socket.on('getState', function(){//get current status
             socket.emit('state', queue.getState());
+        });
+
+        socket.on('getDB', function(){
+            var rows = [];
+            db.each("SELECT rowid, op, state, time FROM queue", function(err,row){
+                console.log(row);
+                rows.push(row);
+            }, function(err, numRows){
+                socket.emit("database", rows);
+            });
         });
     });
 
@@ -56,17 +65,18 @@ function start(){
         console.log('Listening on port %d', http.address().port);
     });
 
-    function saveSendStatus(socket){
+    function saveSendStatus(socket, op){
         db.serialize(function (){
-            db.run("INSERT INTO queue (state, time) VALUES ( ? , datetime())",JSON.stringify(queue.getState()), err);
+            db.run("INSERT INTO queue (op, state, time) VALUES ( ?, ? , datetime())", [op, JSON.stringify(queue.getState())], err);
         });
-        socket.emit('state', queue.getState());
+        io.emit('state', queue.getState());
     }
 
     function loaddata(err, data){
         data = JSON.parse(data.state)
         queue.loadState(data);
     }
+
 
     function err(data){
         console.log(data);
