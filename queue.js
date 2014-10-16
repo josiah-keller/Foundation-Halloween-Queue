@@ -30,6 +30,26 @@ HalloweenQueue.prototype.next = function(texting){
     }
 }
 
+HalloweenQueue.prototype.back = function(){
+    if(this.nextGroup !=null){
+        this.queue.unshfit(this.nextGroup);
+    }
+    if(this.currentGroup != null){
+        this.nextGroup = this.currentGroup;
+    }else{
+        this.nextGroup = null;
+    }
+    if(this.done.[this.done.length-1] != null){
+        this.currentGroup = this.done.[this.done.length-1];
+    }else{
+        this.currentGroup = null;
+    }
+}
+
+HalloweenQueue.prototype.sendReminderText = function(){
+    this.sendText(this.nextGroup);
+}
+
 HalloweenQueue.prototype.add = function(group){
     this.queue.push(group);
 }

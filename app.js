@@ -41,10 +41,19 @@ function start(){
             saveSendStatus(socket,'REMOVE');
         });
 
-        socket.on('next', function(){//notify and move groups
-            queue.next();
+        socket.on('next', function(texting){//notify and move groups
+            queue.next(texting);
             saveSendStatus(socket, 'NEXT');
         });
+
+        socket.on('back', function(){
+            queue.back();
+            saveSendStatus(socket, 'BACK');
+        });
+
+        socket.on('send reminder text', function(){
+            queue.sendReminderText();
+        })
 
         socket.on('getState', function(){//get current status
             socket.emit('state', queue.getState());
