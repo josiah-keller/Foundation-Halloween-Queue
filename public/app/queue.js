@@ -38,10 +38,15 @@ define(function(require) {
         
         self.sendGroup = function () {
             self.status('warn');
+            app.data.emit("next", true);
         };
         
-        self.shiftGroup = function () {
+        self.shiftGroupsUp = function () {
             app.data.emit("next", false);
+        };
+        
+        self.shiftGroupsDown = function () {
+            app.data.emit("back", false);
         };
 
         self.notifyGroup = function () {

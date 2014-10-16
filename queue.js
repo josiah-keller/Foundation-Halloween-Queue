@@ -32,15 +32,15 @@ HalloweenQueue.prototype.next = function(texting){
 
 HalloweenQueue.prototype.back = function(){
     if(this.nextGroup !=null){
-        this.queue.unshfit(this.nextGroup);
+        this.queue.unshift(this.nextGroup);
     }
     if(this.currentGroup != null){
         this.nextGroup = this.currentGroup;
     }else{
         this.nextGroup = null;
     }
-    if(this.done.[this.done.length-1] != null){
-        this.currentGroup = this.done.[this.done.length-1];
+    if(this.done[this.done.length-1] != null){
+        this.currentGroup = this.done[this.done.length-1];
     }else{
         this.currentGroup = null;
     }
