@@ -1,9 +1,6 @@
 <div id="queue">
-    <button class="btn btn-success fa-2x pull-left" data-bind="click: addGroup"><i class="fa fa-group"></i> Add Group</button>
-    <button class="btn btn-primary fa-2x pull-right" data-bind="disable: status()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
-    <br/><br/>
     <div class="text-center">
-        <!--<button class="btn btn-danger" data-bind="click: function(){status('stop')}">STOP</button>-->
+        <button class="btn btn-danger" data-bind="click: function(){status('stop')}">STOP</button>
         <span class="fa-stack fa-lg">
             <!-- ko ifnot: status() == 'stop' -->
             <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':status()=='good','text-warning':status()=='warn'}"></i>
@@ -13,44 +10,67 @@
             <i class="fa fa-ban fa-stack-2x text-danger"></i>
             <!-- /ko -->
         </span>
-        <!--<button class="btn btn-success" data-bind="click: function(){status('good')}">GOOD</button>-->
+        <button class="btn btn-success" data-bind="click: function(){status('good')}">GOOD</button>
     </div>
-    <div id="currentGroup" class="container">
-        <h2 class="col-sm-6">Current Group:</h2>
-        <ul class="list-group">
-            <!-- ko if: currentGroup() -->
-            <li class="list-group-item col-sm-12">
-                <h4 class="col-sm-6" data-bind="text: currentGroup().name"></h4>
-                <h4 class="pull-right" data-bind="text: currentGroup().phoneNumber"></h4>
-            </li>
-            <!-- /ko -->
-        </ul>
+    <div class="col-sm-9">
+        <button class="btn btn-primary fa-2x pull-left" data-bind="click: addGroup"><i class="fa fa-group"></i> Add Group</button>
+        <br/><br/><br/>
+        <div id="currentGroup" class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">Current Group:</h1>
+            </div>
+            <ul class="list-group panel-body">
+                <!-- ko if: currentGroup() -->
+                <li class="list-group-item col-sm-12">
+                    <h4 class="col-sm-6" data-bind="text: currentGroup().name"></h4>
+                    <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
+                    <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
+                    <h4 class="pull-right" data-bind="text: currentGroup().phoneNumber"></h4>
+                </li>
+                <!-- /ko -->
+            </ul>
+        </div>
+        <div id="nextGroup" class="panel panel-default">
+            <div class="panel-heading">
+                <span class="panel-title">
+                    Next Group:
+                    <!-- ko if: nextGroup() -->
+                    <i class="fa fa-bell-o btn btn-primary pull-right" data-bind="click: notifyGroup"> Notify Group</i>
+                    <!-- /ko -->
+                </span>
+            </div>
+            <ul class="list-group panel-body">
+                <!-- ko if: nextGroup() -->
+                <li class="list-group-item col-sm-12">
+                    <h4 class="col-sm-6" data-bind="text: nextGroup().name"></h4>
+                    <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
+                    <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
+                    <h4 class="pull-right" data-bind="text: nextGroup().phoneNumber"></h4>
+                </li>
+                <!-- /ko -->
+            </ul>
+        </div>
+        <div id="queuedGroups" class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">Queued Groups:</h1>
+            </div>
+            <ul class="list-group panel-body" data-bind="foreach: queuedGroups">
+                <li class="list-group-item col-sm-12" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
+                    <h4 class="col-sm-6" data-bind="text: name"></h4>
+                    <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: function(){$root.removeGroup($index)}"></i>
+                    <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
+                    <h4 class="pull-right" data-bind="text: phoneNumber"></h4>
+                </li>
+            </ul>
+        </div>
     </div>
-    <br/>
-    <div id="nextGroup" class="container">
-        <h2 class="col-sm-6">Next Group:</h2>
-        <i class="fa fa-bell-o btn btn-primary pull-right" data-bind="click: notifyGroup"> Notify Group Again</i>
-        <ul class="list-group">
-            <!-- ko if: nextGroup() -->
-            <li class="list-group-item col-sm-12">
-                <h4 class="col-sm-6" data-bind="text: nextGroup().name"></h4>
-                <h4 class="pull-right" data-bind="text: nextGroup().phoneNumber"></h4>
-            </li>
-            <!-- /ko -->
-        </ul>
-    </div>
-    <br/>
-    <div id="queuedGroups" class="container">
-        <h2 class="col-sm-3">Queued Groups:</h2>
-        <ul class="list-group" data-bind="foreach: queuedGroups">
-            <li class="list-group-item col-sm-12">
-                <h4 class="col-sm-6" data-bind="text: name"></h4>
-                <h4 class="pull-right" data-bind="text: phoneNumber"></h4>
-            </li>
-        </ul>
+    <div class="col-sm-3 text-center">
+        <button class="btn btn-success fa-2x" data-bind="click: sendGroup, disable: status()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
+        <br/><br/>
+        <button class="btn btn-primary" data-bind="click: shiftGroup"><i class="fa fa-2x fa-chevron-up"></i><h4>Shift Groups</h4><h6>(No Notification)</h6></button>
+        <br/><br/>
+        <button class="btn btn-primary" data-bind="click: shiftGroup"><h4>Shift Groups</h4><h6>(No Notification)</h6><i class="fa fa-2x fa-chevron-down"></i></button>
     </div>
 </div>
 
 <div class="modal fade" id="myModal"></div>
-
-<div id="textNotification" class="alert alert-info fade out affix-top" role="alert">You have sent a notification</div>

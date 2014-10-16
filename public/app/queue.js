@@ -27,10 +27,21 @@ define(function(require) {
                     group = {};
                     group.name = data.name();
                     group.phoneNumber = data.phoneNumber();
-                    console.log(group);
                     app.data.emit("add group", group);
                 }
             });
+        };
+        
+        self.removeGroup = function (index) {
+            app.data.emit("remove group",index());
+        };
+        
+        self.sendGroup = function () {
+            self.status('warn');
+        };
+        
+        self.shiftGroup = function () {
+            app.data.emit("next", false);
         };
 
         self.notifyGroup = function () {
@@ -42,7 +53,7 @@ define(function(require) {
                     $('#notification').addClass('fadeOutUp');
                 });
             } else {
-                var notifyAlert = $('<div id="notification" class="alert alert-info animated invisible col-sm-6" style="z-index:1000000;position:absolute;left:25%;" role="alert">You have sent a notification</div>');
+                var notifyAlert = $('<div id="notification" class="alert alert-info animated invisible col-sm-6" style="z-index:1000000;position:absolute;left:25%;" role="alert">You have sent a notification to '+self.nextGroup().name+'</div>');
                 notifyAlert.removeClass('invisible');
                 notifyAlert.addClass('fadeInDown');
                 $('body').prepend(notifyAlert).delay(2000).promise().then(function (e) {
@@ -50,6 +61,19 @@ define(function(require) {
                     notifyAlert.addClass('fadeOutUp');
                 });
             }
+        };
+        
+        self.showIcons = function (data, event) {
+            var icons = $(event.currentTarget).find('i');
+            icons.removeClass('invisible');
+            icons.removeClass('fadeOut');
+            icons.addClass('fadeIn');
+        };
+        
+        self.hideIcons = function (data, event) {
+            var icons = $(event.currentTarget).find('i');
+            icons.removeClass('fadeIn');
+            icons.addClass('fadeOut');
         };
 
         self.attached = function(){

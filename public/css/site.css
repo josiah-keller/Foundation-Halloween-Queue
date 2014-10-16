@@ -2,3 +2,11 @@ h1, h2, h3, h4 {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+.list-group-item h4 {
+    margin-right: 20px !important;
+}
+
+.modal h1 {
+    padding: 15px !important;
+}
