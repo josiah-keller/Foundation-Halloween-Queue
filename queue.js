@@ -9,6 +9,7 @@ var HalloweenQueue = function(){
     this.nextGroup = null;
     this.currentGroup = null;
     this.done = [];
+    this.mazeStatus = 'good';
 }
 
 HalloweenQueue.prototype.next = function(texting){
@@ -40,7 +41,7 @@ HalloweenQueue.prototype.back = function(){
         this.nextGroup = null;
     }
     if(this.done[this.done.length-1] != null){
-        this.currentGroup = this.done[this.done.length-1];
+        this.currentGroup = this.done.pop();
     }else{
         this.currentGroup = null;
     }
@@ -58,12 +59,17 @@ HalloweenQueue.prototype.remove = function(index){
     this.queue.splice(index, 1);
 }
 
+HalloweenQueue.prototype.setMazeStatus = function(mazeStatus){
+    this.mazeStatus = mazeStatus;
+}
+
 HalloweenQueue.prototype.getState = function(){
     var state = {};
     state.currentGroup = this.currentGroup;
     state.nextGroup = this.nextGroup;
     state.queue = this.queue;
     state.done = this.done;
+    state.mazeStatus = this.mazeStatus;
     return state;
 }
 
@@ -72,6 +78,7 @@ HalloweenQueue.prototype.loadState = function(state){
     this.nextGroup = state.nextGroup;
     this.queue = state.queue;
     this.done = state.done;
+    this.mazeStatus = state.mazeStatus;
 }
 
 HalloweenQueue.prototype.sendText = function(group){
