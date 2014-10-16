@@ -75,6 +75,7 @@ function start(){
         });
 
         socket.on('mazeStatus', function(state){
+            queue.setMazeStatus(state);
             saveSendStatus('MAZE STATUS');
         })
 
