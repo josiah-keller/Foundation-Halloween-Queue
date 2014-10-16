@@ -56,8 +56,8 @@ function start(){
                 console.log(row);
                 rows.push(row);
             }, function(err, numRows){
-		socket.emit("database", rows);
-	    });
+                socket.emit("database", rows);
+            });
         });
     });
 

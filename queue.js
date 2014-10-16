@@ -11,18 +11,23 @@ var HalloweenQueue = function(){
     this.done = [];
 }
 
-HalloweenQueue.prototype.next = function(){
+HalloweenQueue.prototype.next = function(texting){
     if(this.currentGroup != null){
-	this.done.push(this.currentGroup);
+       this.done.push(this.currentGroup);
     }
     if(this.nextGroup != null){
-	this.currentGroup = this.nextGroup;
+        this.currentGroup = this.nextGroup;
+    }else{
+        this.currentGroup = null;
     }
     if(this.queue.length != 0){
-	this.nextGroup = this.queue.shift();
+        this.nextGroup = this.queue.shift();
+    }else{
+        this.nextGroup = null;
     }
-    this.sendText(this.nextGroup);
-//    this.sendText(this.queue[0]);
+    if(texting){
+        this.sendText(this.nextGroup);
+    }
 }
 
 HalloweenQueue.prototype.add = function(group){
