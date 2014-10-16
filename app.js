@@ -4,13 +4,32 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require("fs");
 var sqlite3 = require('sqlite3').verbose();
+var passport = require('passport');
+var GoogleStrategy = require('passport-google').Strategy;
 
 var HalloweenQueue = require('./queue.js').HalloweenQueue;
 
 var port = process.env.PORT || 3000;
 
+passport.use(new GoogleStrategy({
+    returnURL: 'http://guarded-tundra-1196.herokuapp.com/auth/google/return',
+    realm: 'http://guarded-tundra-1196.herokuapp.com/'
+  },
+  function(identifier, profile, done) {
+    User.findOrCreate({ openId: identifier }, function(err, user) {
+      done(err, user);
+    });
+  }
+));
+
 function start(){
     
+    app.get('/auth/google', passport.authenticate('google'));
+
+    app.get('/auth/google/return', 
+        passport.authenticate('google', { successRedirect: '/',
+                                      failureRedirect: '/login' }));
+
     var queue = new HalloweenQueue();
 
     var file = "database.db";
@@ -33,26 +52,30 @@ function start(){
 
         socket.on('add group', function(group){ //add group
             queue.add(group);
-            saveSendStatus(socket,'ADD');
+            saveSendStatus('ADD');
         });
 
         socket.on('remove group', function(index){// remove group
             queue.remove(index);
-            saveSendStatus(socket,'REMOVE');
+            saveSendStatus('REMOVE');
         });
 
         socket.on('next', function(texting){//notify and move groups
             queue.next(texting);
-            saveSendStatus(socket, 'NEXT');
+            saveSendStatus('NEXT');
         });
 
         socket.on('back', function(){
             queue.back();
-            saveSendStatus(socket, 'BACK');
+            saveSendStatus('BACK');
         });
 
         socket.on('send reminder text', function(){
             queue.sendReminderText();
+        });
+
+        socket.on('mazeStatus', function(state){
+            saveSendStatus('MAZE STATUS');
         })
 
         socket.on('getState', function(){//get current status
@@ -74,7 +97,7 @@ function start(){
         console.log('Listening on port %d', http.address().port);
     });
 
-    function saveSendStatus(socket, op){
+    function saveSendStatus(op){
         db.serialize(function (){
             db.run("INSERT INTO queue (op, state, time) VALUES ( ?, ? , datetime())", [op, JSON.stringify(queue.getState())], err);
         });
