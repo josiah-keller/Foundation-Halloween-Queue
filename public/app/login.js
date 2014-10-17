@@ -15,8 +15,8 @@ define(function(require) {
     		user.username = self.username();
     		user.password = self.password();
     		$.ajax({
-    			url: "https://foundation-haunted-maze.herokuapp.com/login",
-                //url: "http://localhost:3000/login",
+    			//url: "https://foundation-haunted-maze.herokuapp.com/login",
+                url: "http://localhost:3000/login",
                 data: user,
                 dataType: 'json',
                 type: "POST",

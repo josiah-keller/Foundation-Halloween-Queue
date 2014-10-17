@@ -56,7 +56,8 @@
             </div>
             <ul class="list-group panel-body" data-bind="foreach: queuedGroups">
                 <li class="list-group-item col-sm-12" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
-                    <h4 class="col-sm-6" data-bind="text: name"></h4>
+                    <h4 class="col-sm-2" data-bind="text: name"></h4>
+                    <h4 class="col-sm-2" data-bind="text: $parent.groupDisplay(groupSize)"></h4>
                     <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: function(){$root.removeGroup($index)}"></i>
                     <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
                     <h4 class="pull-right" data-bind="text: phoneNumber"></h4>

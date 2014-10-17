@@ -27,6 +27,7 @@ define(function(require) {
                     group = {};
                     group.name = data.name();
                     group.phoneNumber = data.phoneNumber();
+                    group.groupSize = data.groupSize();
                     app.data.emit("add group", group);
                 }
             });
@@ -81,6 +82,14 @@ define(function(require) {
             icons.removeClass('fadeIn');
             icons.addClass('fadeOut');
         };
+
+        self.groupDisplay = function(numPeople){
+            if(numPeople == 1){
+                return "1 person";
+            }else{
+                return numPeople + " people";
+            }
+        }
 
         self.attached = function(){
             app.data.emit("getState");

@@ -10,6 +10,7 @@ define(function(require) {
 
         self.name = ko.observable();
         self.phoneNumber = ko.observable();
+        self.groupSize = ko.observable(1);
 
         self.create = function () {
             console.log(self);
