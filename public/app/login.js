@@ -21,8 +21,9 @@ define(function(require) {
                 dataType: 'json',
                 type: "POST",
     		}).done(function(data){
-    			console.log(data.authenticated);
     			if(data.authenticated == true){
+                    app.authenticated(true);
+                    app.permissions = data.permissions;
     				router.navigate("/");
     			}
     		}).fail(function(err){

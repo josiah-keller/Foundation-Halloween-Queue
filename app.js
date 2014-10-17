@@ -38,7 +38,7 @@ function start(){
         for(var i = 0; i < accounts.length; i++){
             var user = accounts[i];
             if(username == user.username && password == user.password){
-                res.send({'authenticated': true});
+                res.send({'authenticated': true, 'permissions':user.permissions});
                 return;
             }
         }
