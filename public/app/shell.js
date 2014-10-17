@@ -6,7 +6,8 @@ define(function (require) {
         router: router,
         activate: function () {
             router.map([
-                { route: '', title:'Home', moduleId: 'home', nav: false }
+                { route: '', title:'Home', moduleId: 'home', nav: false },
+                { route: 'login', title: 'Login', moduleId: 'login', nav: true}
             ]).buildNavigationModel();
 
             return router.activate();

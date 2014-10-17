@@ -2,33 +2,22 @@ var express = require('express');
 var app = express()
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var bodyParser = require('body-parser');
+
 var fs = require("fs");
 var sqlite3 = require('sqlite3').verbose();
-var passport = require('passport');
-var GoogleStrategy = require('passport-google').Strategy;
+var accounts = require('./accounts.json');
 
 var HalloweenQueue = require('./queue.js').HalloweenQueue;
 
 var port = process.env.PORT || 3000;
 
-passport.use(new GoogleStrategy({
-    returnURL: 'http://guarded-tundra-1196.herokuapp.com/auth/google/return',
-    realm: 'http://guarded-tundra-1196.herokuapp.com/'
-  },
-  function(identifier, profile, done) {
-    User.findOrCreate({ openId: identifier }, function(err, user) {
-      done(err, user);
-    });
-  }
-));
+app.use( bodyParser.json() );
+app.use( bodyParser.urlencoded() );
+
+app.use('/', express.static(__dirname+'/public'));
 
 function start(){
-    
-    app.get('/auth/google', passport.authenticate('google'));
-
-    app.get('/auth/google/return', 
-        passport.authenticate('google', { successRedirect: '/',
-                                      failureRedirect: '/login' }));
 
     var queue = new HalloweenQueue();
 
@@ -43,7 +32,18 @@ function start(){
         }
     });
 
-    app.use('/', express.static(__dirname+'/public'));
+    app.post('/login', function(req,res){
+        var username = req.body.username;
+        var password = req.body.password;
+        for(var i = 0; i < accounts.length; i++){
+            var user = accounts[i];
+            if(username == user.username && password == user.password){
+                res.send({'authenticated': true});
+                return;
+            }
+        }
+        res.send({'authenticated': false});
+    });
 
     io.on('connection', function(socket){
         socket.on('disconnect', function(){
