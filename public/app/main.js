@@ -11,6 +11,7 @@ requirejs.config({
  
 define(function (require) {
    var system = require('durandal/system'),
+       ko = require('knockout'),
        app = require('durandal/app');
  
    system.debug(true);
@@ -18,6 +19,9 @@ define(function (require) {
    app.title = 'Foundation Halloween Open House';
    
    app.data = io();
+   app.authenticated = ko.observable(false);
+   app.permissions = null;
+
    app.configurePlugins({
      router:true,
      dialog: true
