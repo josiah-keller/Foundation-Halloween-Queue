@@ -10,6 +10,8 @@ define(function(require) {
 
         self.name = ko.observable();
         self.phoneNumber = ko.observable();
+        
+        var previousLength = 0;
 
         self.create = function () {
             console.log(self);
@@ -19,6 +21,20 @@ define(function(require) {
 
         self.close = function () {
             dialog.close(self, self);
+        };
+        
+        self.activate = function () {
+            self.phoneNumber.subscribe(function(value) {
+                console.log(value);
+                var forward = value.length > previousLength;
+                previousLength = value.length;
+                // If adding numbers
+                if (forward && (value.length == 3 || value.length == 7))
+                    self.phoneNumber(value + '-');
+                // If deleteing numbers
+                if (!forward && (value.length == 4 || value.length == 8))
+                    self.phoneNumber(value.substr(0, value.length-1));
+            });
         };
     };
 

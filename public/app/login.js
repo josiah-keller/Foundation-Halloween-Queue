@@ -22,13 +22,15 @@ define(function(require) {
                 type: "POST",
     		}).done(function(data){
     			if(data.authenticated == true){
+                    sessionStorage.username = user.username;
+                    sessionStorage.password = user.password;
                     app.authenticated(true);
                     app.permissions = data.permissions;
     				router.navigate("/");
     			}
     		}).fail(function(err){
     			console.log(err);
-    		})
+    		});
     	}
     }
 

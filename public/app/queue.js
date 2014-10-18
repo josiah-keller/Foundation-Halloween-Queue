@@ -15,6 +15,8 @@ define(function(require) {
             self.queuedGroups(data.queue);
             self.mazeStatus(data.mazeStatus);
         });
+        
+        self.userPermissions = app.permissions;
 
         self.currentGroup = ko.observable();
         self.nextGroup = ko.observable();
