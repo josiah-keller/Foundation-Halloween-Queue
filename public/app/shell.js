@@ -5,7 +5,27 @@ define(function (require) {
 
     var self = {
         router: router,
-        activate: function () {
+        activate: function () {            
+            if (sessionStorage.username != null && sessionStorage.password != null){
+                var user = {};
+                user.username = sessionStorage.username;
+                user.password = sessionStorage.password;
+                $.ajax({
+                    //url: "https://foundation-haunted-maze.herokuapp.com/login",
+                    url: "http://localhost:3000/login",
+                    data: user,
+                    dataType: 'json',
+                    type: "POST",
+                }).done(function(data){
+                    if(data.authenticated == true){
+                        app.authenticated(true);
+                        app.permissions = data.permissions;
+                    }
+                }).fail(function(err){
+                    console.log(err);
+                });
+            }
+            
             router.map([
                 { route: '', title:'Home', moduleId: 'home', nav: false },
                 { route: 'login', title: 'Login', moduleId: 'login', nav: false}
@@ -25,6 +45,7 @@ define(function (require) {
         }, this),
 
         logout: function(){
+            sessionStorage.clear();
             app.authenticated(false);
             app.permissions = null;
             router.navigate('login');

@@ -10,5 +10,17 @@
 		"username":"Bryant",
 		"password":"password",
 		"permissions": "admin"
+	},
+	{
+		"id": 3,
+		"username":"Downstairs",
+		"password":"password",
+		"permissions": "downstairs"
+	},
+	{
+		"id": 4,
+		"username":"Upstairs",
+		"password":"password",
+		"permissions": "upstairs"
 	}
 ]

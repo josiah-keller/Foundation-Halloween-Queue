@@ -9,17 +9,28 @@ define(function(require) {
         var self = this;
 
         app.data.on("state", function(data){
-            console.log('state change', data.queue);
+            console.log('state change', data);
             self.currentGroup(data.currentGroup);
             self.nextGroup(data.nextGroup);
             self.queuedGroups(data.queue);
+            self.mazeStatus(data.mazeStatus);
         });
+        
+        self.userPermissions = app.permissions;
 
         self.currentGroup = ko.observable();
         self.nextGroup = ko.observable();
         self.queuedGroups = ko.observableArray();
         
         self.mazeStatus = ko.observable('stop');
+        
+        self.mazeStatusStop = function () {
+            app.data.emit("mazeStatus",'stop');
+        };
+        
+        self.mazeStatusGood = function () {
+            app.data.emit("mazeStatus",'good');
+        }
 
         self.addGroup = function () {
             dialog.show("../addGroup", null, 'bootstrap').then(function (data) {
@@ -38,8 +49,8 @@ define(function(require) {
         };
         
         self.sendGroup = function () {
-            self.mazeStatus('warn');
             app.data.emit("next", true);
+            app.data.emit("mazeStatus",'warn');
         };
         
         self.shiftGroupsUp = function () {
