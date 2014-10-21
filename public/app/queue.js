@@ -97,7 +97,7 @@ define(function(require) {
         self.groupDisplay = function(numPeople){
             if(numPeople == 1){
                 return "1 person";
-            }else{
+            }else if (numPeople != null){
                 return numPeople + " people";
             }
         }
