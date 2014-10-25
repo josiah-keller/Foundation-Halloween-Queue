@@ -10,7 +10,7 @@ define(function(require) {
     	self.queuedGroups = ko.observableArray([]);
 
     	self.getNextGroupName = function(){
-    		return "1. " + self.nextGroup().name + " - " + self.nextGroup().groupSize;
+    		if(self.nextGroup()) return "1. " + self.nextGroup().name + " - " + self.nextGroup().groupSize;
     	}
 
     	self.getQueuedGroupName = function(index){

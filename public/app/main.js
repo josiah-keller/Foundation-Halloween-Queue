@@ -22,6 +22,9 @@ define(function (require) {
    app.authenticated = ko.observable(false);
    app.permissions = null;
 
+   //app.url = "https://foundation-haunted-maze.herokuapp.com/login";
+   app.url = "http://localhost:3000/login";
+
    app.configurePlugins({
      router:true,
      dialog: true
