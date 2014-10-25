@@ -23,14 +23,6 @@ define(function(require) {
     	app.data.on("state", function(data){
             console.log('state change', data);
             self.nextGroup(data.nextGroup);
-            
-            for(var i = 0; i<20; i++){
-            	var group = {
-            		name: i,
-            		groupSize: i
-            	}
-            	data.queue.push(group);
-            }
             self.queuedGroups(data.queue);
         });
 
