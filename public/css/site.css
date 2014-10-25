@@ -10,3 +10,31 @@ h1, h2, h3, h4 {
 .modal h1 {
     padding: 15px !important;
 }
+
+#display {
+	background: url(/images/Boogie.jpg);
+	height: 100%;
+	width: 100%;
+	color: #E5E583;
+	overflow-x: hidden;
+  	overflow-y: hidden;
+}
+
+#display-list {
+	margin-left: 30px;
+	margin-top: 30px;
+}
+
+.display-row{
+	margin-right: 15px;
+	margin-left: 15px;
+}
+
+body{
+	height: 100%;
+	width: 100%;
+}
+
+#main-content{
+	padding: 0px;
+}

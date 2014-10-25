@@ -11,8 +11,8 @@ define(function (require) {
                 user.username = sessionStorage.username;
                 user.password = sessionStorage.password;
                 $.ajax({
-                    url: "https://foundation-haunted-maze.herokuapp.com/login",
-                    //url: "http://localhost:3000/login",
+                    //url: "https://foundation-haunted-maze.herokuapp.com/login",
+                    url: "http://localhost:3000/login",
                     data: user,
                     dataType: 'json',
                     type: "POST",
@@ -28,10 +28,14 @@ define(function (require) {
             
             router.map([
                 { route: '', title:'Home', moduleId: 'home', nav: false },
-                { route: 'login', title: 'Login', moduleId: 'login', nav: false}
+                { route: 'login', title: 'Login', moduleId: 'login', nav: false},
+                { route: 'display', title: 'Display', moduleId: 'display', nav: true},
             ]).buildNavigationModel();
 
             router.guardRoute = function(instance, instructions){
+                if(app.authenticated() == false && instructions.fragment === 'display'){
+                    return true;
+                }
                 if(app.authenticated() == false && instructions.fragment !== 'login'){
                     return "login";
                 }

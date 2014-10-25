@@ -17,5 +17,5 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid page-host" data-bind="router: { transition:'entrance' }"></div>
+    <div id= "main-content" class="container-fluid page-host" data-bind="router: { transition:'entrance' }, style: { top: authenticated() ? '50px' : '0px' }"></div>
 </div>

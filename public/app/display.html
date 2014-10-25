@@ -1,0 +1,13 @@
+<div id="display">
+	<div id="display-list" class="col-lg-6">
+		<h1>Next Groups:</h1>
+		<div >
+			<br/>
+			<h2 data-bind="text: getNextGroupName()"></h2>
+		</div>
+		<div data-bind="foreach: queuedGroups">
+			<br/>
+			<h2 data-bind="text: $parent.getQueuedGroupName($index())"></h2>
+		</div>
+	</div>
+</div>
