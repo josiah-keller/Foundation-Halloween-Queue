@@ -14,7 +14,11 @@ define(function(require) {
     	}
 
     	self.getQueuedGroupName = function(index){
-    		var num = index+2
+    		if(self.nextGroup()){
+    			var num = index+2
+    		}else{
+    			var num = index+1
+    		}
     		var group = self.queuedGroups()[index];
     		console.log(group)
     		return num + ". " + group.name + " - " + group.groupSize;
