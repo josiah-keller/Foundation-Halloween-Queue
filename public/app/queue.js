@@ -15,8 +15,14 @@ define(function(require) {
             self.queuedGroups(data.queue);
             self.mazeStatus(data.mazeStatus);
         });
-        
+
         self.userPermissions = app.permissions;
+
+        if(app.permissions == 'admin' || app.permissions == "upstairs"){
+            app.data.on("error", function(error){
+                app.showMessage(error.message);
+            });
+        }
 
         self.currentGroup = ko.observable();
         self.nextGroup = ko.observable();

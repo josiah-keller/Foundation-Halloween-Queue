@@ -19,7 +19,7 @@ app.use('/', express.static(__dirname+'/public'));
 
 function start(){
 
-    var queue = new HalloweenQueue();
+    var queue = new HalloweenQueue(io);
 
     var file = "database.db";
     var exists = fs.existsSync(file);

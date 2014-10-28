@@ -4,12 +4,15 @@ var accountSid = 'ACf72e0a36e3a78b1a4301c58a3a62faa3';
 var authToken = "c898fc493f1744a89f3bfb9f9f204536";
 var client = twilio(accountSid, authToken);
 
-var HalloweenQueue = function(){
+var HalloweenQueue = function(io){
     this.queue = [];
     this.nextGroup = null;
     this.currentGroup = null;
     this.done = [];
     this.mazeStatus = 'good';
+    this.errorCallback = function (err){
+        io.emit("error", err);
+    };
 }
 
 HalloweenQueue.prototype.next = function(texting){
@@ -82,16 +85,15 @@ HalloweenQueue.prototype.loadState = function(state){
 }
 
 HalloweenQueue.prototype.sendText = function(group){
-    console.log(group)
+    var phoneNumber = "+1" + group.phoneNumber.split("-").join('');
+    var errorCallback = this.errorCallback;
     client.messages.create({
-        body: "Your group is next in the Haunted Maze!",
+        body: "Foundation - Your group is next in the Haunted Maze! Please come to the entrance!",
         to: "+16306975879",
         from: "+17085723531"
     }, function(err, message) {
         if(err){
-            console.log(err);
-        }else{
-            console.log(message.sid);
+            errorCallback(err);
         }
     });
 }
