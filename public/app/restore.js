@@ -40,7 +40,7 @@ define(function(require) {
         }
 
         self.download = function(){
-            window.location = "http://localhost:3000/download"
+            window.location = "https://foundation-haunted-maze.herokuapp.com/download"
         }
         
         
