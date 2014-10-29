@@ -1,14 +1,16 @@
 <div id="display">
 	<img class="bg" src="/images/Boogie.jpg"></img>
-	<div id="display-list" class="col-lg-6">
+	<div id="display-list" class="col-lg-3">
 		<h1>Next Groups:</h1>
-		<div >
-			<br/>
-			<h2 data-bind="text: getNextGroupName()"></h2>
-		</div>
 		<div data-bind="foreach: queuedGroups">
 			<br/>
 			<h2 data-bind="text: $parent.getQueuedGroupName($index())"></h2>
+		</div>
+	</div>
+	<div id="display-list2" class="col-lg-3">
+		<div data-bind="foreach: queuedGroups2">
+			<br/>
+			<h2 data-bind="text: $parent.getQueuedGroup2Name($index())"></h2>
 		</div>
 	</div>
 </div>

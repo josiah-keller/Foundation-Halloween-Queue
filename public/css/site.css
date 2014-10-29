@@ -42,8 +42,12 @@ img.bg {
 }
 
 #display-list {
-	margin-left: 30px;
-	margin-top: 120px;
+	margin-left: 50px;
+	margin-top: 125px;
+}
+
+#display-list2 {
+	margin-top: 165px;
 }
 
 .display-row{
