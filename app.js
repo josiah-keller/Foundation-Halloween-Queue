@@ -48,6 +48,11 @@ function start(){
         res.send({'authenticated': false});
     });
 
+    app.get('/download', function(req,res){
+        var file = __dirname + '/database.db';
+        res.download(file);
+    });
+
     io.on('connection', function(socket){
         socket.on('disconnect', function(){
             console.log('user disconnected');

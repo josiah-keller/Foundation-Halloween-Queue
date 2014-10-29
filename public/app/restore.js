@@ -38,6 +38,10 @@ define(function(require) {
                 return "Next: null";
             }
         }
+
+        self.download = function(){
+            window.location = "http://localhost:3000/download"
+        }
         
         
         self.activate = function(){
