@@ -1,10 +1,23 @@
 <div>
-    <h1> Restore State </h1>
+    <h2> Restore State </h2>
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2"
             <ul class="list-group" data-bind="foreach: rows">
                 <li class="list-group-item">
-                    <p data-bind="text: rowid"></p>
+                    <div class="row">
+                        <p class="col-md-1" data-bind="text: rowid"></p>
+                        <p class="col-md-2" data-bind="text: op"></p>
+                        <p class="col-md-2" data-bind="text: $root.currentGroupName(state.currentGroup)"></p>
+                        <p class="col-md-2" data-bind="text: $root.nextGroupName(state.nextGroup)"></p>
+                        <p class="col-md-2" data-bind="text: 'In Queue: ' + state.queue.length"></p>
+                        <p class="col-md-2" data-bind="text: time"></p>
+                        <button type="button" class="btn btn-primary" data-toggle="collapse" data-bind="attr: {'data-target': '#'+ rowid}">Details <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </div>
+                    <br/>
+                    <div class="row collapse" data-bind="attr: {id: rowid}">
+                        <p class="col-md-2" data-bind="text: 'Groups completed: ' + state.done.length"></p>
+                        <button class="btn btn-success col-md-offset-9" data-bind="click: $root.restore"><span class="glyphicon glyphicon-ok"></span> Restore</button>
+                    </div>
                 </li>
             </ul>
         </div>

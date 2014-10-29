@@ -20,6 +20,7 @@ app.use('/', express.static(__dirname+'/public'));
 function start(){
 
     var queue = new HalloweenQueue(io);
+    var chat = [];
 
     var file = "database.db";
     var exists = fs.existsSync(file);
@@ -27,8 +28,10 @@ function start(){
     db.serialize(function(){
         if(!exists){
             db.run("CREATE TABLE queue ('op' TEXT, 'state' TEXT, 'time' DATETIME)");
+            db.run("CREATE TABLE chat ('sender' TEXT, 'message' TEXT)");
         }else{
             db.each("SELECT state FROM queue WHERE rowid = (SELECT MAX(rowid) FROM queue)", loaddata);
+            db.each("SELECT * FROM chat", loadchat);
         }
     });
 
@@ -76,7 +79,7 @@ function start(){
 
         socket.on('mazeStatus', function(state){
             queue.setMazeStatus(state);
-            saveSendStatus('MAZE STATUS');
+            saveSendStatus('MAZE '+state);
         })
 
         socket.on('getState', function(){//get current status
@@ -86,12 +89,29 @@ function start(){
         socket.on('getDB', function(){
             var rows = [];
             db.each("SELECT rowid, op, state, time FROM queue", function(err,row){
-                console.log(row);
                 rows.push(row);
             }, function(err, numRows){
-                socket.emit("database", rows);
+                socket.emit("database", rows.reverse());
             });
         });
+
+        socket.on('restore', function(rowid){
+            db.get("SELECT state FROM queue WHERE rowid=?",rowid,
+                function(err,row){
+                    loaddata(err, row);
+                    saveSendStatus("RESTORE "+rowid);
+                });
+        });
+
+        socket.on('getChat', function(){
+            socket.emit('chatUpdate', chat);
+        });
+
+        socket.on('newChat', function(item){
+            saveMessage(item);
+            chat.push(item);
+            io.emit('chatUpdate', chat);
+        })
     });
 
     http.listen(port, function(){
@@ -105,11 +125,20 @@ function start(){
         io.emit('state', queue.getState());
     }
 
+    function saveMessage(item){
+        db.serialize(function (){
+            db.run("INSERT INTO chat (sender, message) VALUES ( ?, ? )", [item.sender, item.message], err);
+        });
+    }
+
     function loaddata(err, data){
         data = JSON.parse(data.state)
         queue.loadState(data);
     }
 
+    function loadchat(err, row){
+        chat.push(row);
+    }
 
     function err(data){
         console.log(data);

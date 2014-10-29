@@ -18,11 +18,13 @@ h1, h2, h3, h4 {
 	color: #E5E583;
 	overflow-x: hidden;
   	overflow-y: hidden;
+  	background-size: 1920px 1080px;
+    background-repeat: no-repeat;
 }
 
 #display-list {
 	margin-left: 30px;
-	margin-top: 30px;
+	margin-top: 120px;
 }
 
 .display-row{

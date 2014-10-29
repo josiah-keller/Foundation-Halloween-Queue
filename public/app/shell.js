@@ -29,6 +29,7 @@ define(function (require) {
                 { route: '', title:'Home', moduleId: 'home', nav: false },
                 { route: 'login', title: 'Login', moduleId: 'login', nav: false},
                 { route: 'display', title: 'Display', moduleId: 'display', nav: true},
+                { route: 'restore', title: 'Restore', moduleId: 'restore', nav: true},
             ]).buildNavigationModel();
 
             router.guardRoute = function(instance, instructions){

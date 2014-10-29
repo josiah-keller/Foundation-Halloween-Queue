@@ -29,7 +29,7 @@ HalloweenQueue.prototype.next = function(texting){
     }else{
         this.nextGroup = null;
     }
-    if(texting){
+    if(texting && this.nextGroup != null){
         this.sendText(this.nextGroup);
     }
 }
