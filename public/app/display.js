@@ -24,7 +24,7 @@ define(function(require) {
     	app.data.on("state", function(data){
             self.queuedGroups([]);
             self.queuedGroups2([]);
-            self.queuedGroups.unshift(data.nextGroup);
+            if(data.nextGroup) self.queuedGroups.unshift(data.nextGroup);
             for(var i = 0; i<data.queue.length; i++){
                 if(i<16){
                     self.queuedGroups.push(data.queue[i]);

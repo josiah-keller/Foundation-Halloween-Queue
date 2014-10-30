@@ -11,6 +11,8 @@ define(function(require) {
         self.name = ko.observable();
         self.phoneNumber = ko.observable();
         self.groupSize = ko.observable(1);
+        self.title = "Add Group";
+        self.id = "";
         
         var previousLength = 0;
 
@@ -23,7 +25,15 @@ define(function(require) {
             dialog.close(self, self);
         };
         
-        self.activate = function () {
+        self.activate = function (data) {
+            if(data){
+                self.title = "Edit Group";
+                self.name(data.name);
+                self.phoneNumber(data.phoneNumber);
+                self.groupSize(data.groupSize);
+                previousLength = 12;
+                self.id = data.id;
+            }
             self.phoneNumber.subscribe(function(value) {
                 var forward = value.length > previousLength;
                 previousLength = value.length;

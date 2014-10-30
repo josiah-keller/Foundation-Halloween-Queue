@@ -3,6 +3,7 @@ var app = express()
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
+var uuid = require('uuid');
 
 var fs = require("fs");
 var sqlite3 = require('sqlite3').verbose();
@@ -59,8 +60,14 @@ function start(){
         });
 
         socket.on('add group', function(group){ //add group
+            group.id = uuid.v1();
             queue.add(group);
             saveSendStatus('ADD');
+        });
+
+        socket.on('edit group', function(group){
+            queue.edit(group);
+            saveSendStatus('EDIT');
         });
 
         socket.on('remove group', function(index){// remove group

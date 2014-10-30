@@ -53,6 +53,20 @@ define(function(require) {
         self.removeGroup = function (index) {
             app.data.emit("remove group",index());
         };
+
+        self.editGroup = function(group){
+            dialog.show("../addGroup", group, 'bootstrap').then(function (data) {
+                if (data.createGroup) {
+                    group = {};
+                    group.name = data.name();
+                    group.phoneNumber = data.phoneNumber();
+                    group.groupSize = data.groupSize();
+                    group.id = data.id;
+                    console.log(group);
+                    app.data.emit("edit group", group);
+                }
+            });
+        }
         
         self.sendGroup = function () {
             app.data.emit("next", true);

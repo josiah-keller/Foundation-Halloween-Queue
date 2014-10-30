@@ -1,8 +1,6 @@
-var twilio = require('twilio');
+var nexmo = require('easynexmo');
 
-var accountSid = 'ACf72e0a36e3a78b1a4301c58a3a62faa3';
-var authToken = "c898fc493f1744a89f3bfb9f9f204536";
-var client = twilio(accountSid, authToken);
+nexmo.initialize('ea0e8d24','7ee09e56','https',true);
 
 var HalloweenQueue = function(io){
     this.queue = [];
@@ -10,8 +8,14 @@ var HalloweenQueue = function(io){
     this.currentGroup = null;
     this.done = [];
     this.mazeStatus = 'good';
-    this.errorCallback = function (err){
-        io.emit("error", err);
+    this.errorCallback = function (err, message){
+        if(err){
+            console.log(err);
+            io.emit("error", err);
+        } 
+        else{
+            console.log(message);
+        }
     };
 }
 
@@ -62,6 +66,14 @@ HalloweenQueue.prototype.remove = function(index){
     this.queue.splice(index, 1);
 }
 
+HalloweenQueue.prototype.edit = function(group){
+    for(var i = 0; i<this.queue.length; i++){
+        if(this.queue[i].id == group.id){
+            this.queue[i] = group;
+        }
+    }
+}
+
 HalloweenQueue.prototype.setMazeStatus = function(mazeStatus){
     this.mazeStatus = mazeStatus;
 }
@@ -85,17 +97,9 @@ HalloweenQueue.prototype.loadState = function(state){
 }
 
 HalloweenQueue.prototype.sendText = function(group){
-    var phoneNumber = "+1" + group.phoneNumber.split("-").join('');
+    var phoneNumber = "1" + group.phoneNumber.split("-").join('');
     var errorCallback = this.errorCallback;
-    client.messages.create({
-        body: "Foundation - Your group is next in the Haunted Maze! Please come to the entrance!",
-        to: "+16306975879",
-        from: "+17085723531"
-    }, function(err, message) {
-        if(err){
-            errorCallback(err);
-        }
-    });
+    nexmo.sendTextMessage("12105190253",phoneNumber,'Your group is next in the Haunted Maze! Please come to the entrance!',null,this.errorCallback);
 }
 
 exports.HalloweenQueue = HalloweenQueue;
