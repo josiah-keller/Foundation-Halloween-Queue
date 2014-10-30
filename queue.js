@@ -1,6 +1,6 @@
 var nexmo = require('easynexmo');
 
-nexmo.initialize('ea0e8d24','7ee09e56','https',true);
+nexmo.initialize('ea0e8d24','7ee09e56','https',false);
 
 var HalloweenQueue = function(io){
     this.queue = [];
@@ -10,11 +10,14 @@ var HalloweenQueue = function(io){
     this.mazeStatus = 'good';
     this.errorCallback = function (err, message){
         if(err){
-            console.log(err);
+            //console.log(err);
             io.emit("error", err);
         } 
         else{
-            console.log(message);
+            if(message.messages[0]['error-text']){
+                console.log("Here")
+                io.emit("error", message.messages[0]['error-text']);
+            }
         }
     };
 }
@@ -98,7 +101,6 @@ HalloweenQueue.prototype.loadState = function(state){
 
 HalloweenQueue.prototype.sendText = function(group){
     var phoneNumber = "1" + group.phoneNumber.split("-").join('');
-    var errorCallback = this.errorCallback;
     nexmo.sendTextMessage("12105190253",phoneNumber,'Your group is next in the Haunted Maze! Please come to the entrance!',null,this.errorCallback);
 }
 

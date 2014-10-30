@@ -20,7 +20,7 @@ define(function(require) {
 
         if(app.permissions == 'admin' || app.permissions == "upstairs"){
             app.data.on("error", function(error){
-                app.showMessage(error.message);
+                app.showMessage(error);
             });
         }
 
