@@ -24,10 +24,10 @@ define(function(require) {
             }
         }
 
-        self.restore = function (state){
-            app.showMessage("Are you sure you want to restore to state "+state.rowid, null, [ { text: "Yes", value: true }, { text: "No", value: false }])
+        self.restore = function (state, index){
+            app.showMessage("Are you sure you want to restore to state "+ index, null, [ { text: "Yes", value: true }, { text: "No", value: false }])
             .then(function(val){
-                app.data.emit("restore", state.rowid);
+                app.data.emit("restore", index);
             })
         }
 
@@ -40,7 +40,7 @@ define(function(require) {
         }
 
         self.download = function(){
-            window.location = "https://foundation-haunted-maze.herokuapp.com/download"
+            window.location = "https://foundation-haunted-maze.herokuapp.com/download";
         }
         
         
@@ -51,7 +51,10 @@ define(function(require) {
                 app.showMessage("Access Denied");
                 router.navigate("");
             }
-               
+        }
+        
+        self.detached = function() {
+            app.data.off("database");
         }
     }
     

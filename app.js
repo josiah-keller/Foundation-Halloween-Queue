@@ -1,13 +1,14 @@
 var express = require('express');
-var app = express()
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 var uuid = require('uuid');
 
-var fs = require("fs");
-var sqlite3 = require('sqlite3').verbose();
 var accounts = require('./accounts.json');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
 
 var HalloweenQueue = require('./queue.js').HalloweenQueue;
 
@@ -19,22 +20,12 @@ app.use( bodyParser.urlencoded() );
 app.use('/', express.static(__dirname+'/public'));
 
 function start(){
+    
+    var QueueState = require('./models/QueueState.model');
+    var Message = require('./models/message.model');
 
     var queue = new HalloweenQueue(io);
     var chat = [];
-
-    var file = "database.db";
-    var exists = fs.existsSync(file);
-    var db = new sqlite3.Database(file);
-    db.serialize(function(){
-        if(!exists){
-            db.run("CREATE TABLE queue ('op' TEXT, 'state' TEXT, 'time' DATETIME)");
-            db.run("CREATE TABLE chat ('sender' TEXT, 'message' TEXT)");
-        }else{
-            db.each("SELECT state FROM queue WHERE rowid = (SELECT MAX(rowid) FROM queue)", loaddata);
-            db.each("SELECT * FROM chat", loadchat);
-        }
-    });
 
     app.post('/login', function(req,res){
         var username = req.body.username;
@@ -50,8 +41,8 @@ function start(){
     });
 
     app.get('/download', function(req,res){
-        var file = __dirname + '/database.db';
-        res.download(file);
+        //var file = __dirname + '/database.db';
+        //res.download(file);
     });
 
     io.on('connection', function(socket){
@@ -98,21 +89,21 @@ function start(){
             socket.emit('state', queue.getState());
         });
 
-        socket.on('getDB', function(){
-            var rows = [];
-            db.each("SELECT rowid, op, state, time FROM queue", function(err,row){
-                rows.push(row);
-            }, function(err, numRows){
-                socket.emit("database", rows.reverse());
+        socket.on('getDB', function(){            
+            QueueState.find({}).sort('+time').exec( function(err, docs) {
+                if (err) return console.error(err);
+                console.log('getDB');
+                socket.emit("database", docs);                
             });
         });
 
         socket.on('restore', function(rowid){
-            db.get("SELECT state FROM queue WHERE rowid=?",rowid,
-                function(err,row){
-                    loaddata(err, row);
-                    saveSendStatus("RESTORE "+rowid);
-                });
+            console.log(rowid);
+             QueueState.find({}).sort('+time').skip(rowid).limit(1).exec(function(err, doc) {
+                 console.log(doc);
+                 loaddata(err, doc[0]);
+                 saveSendStatus("RESTORE "+rowid);
+             });
         });
 
         socket.on('getChat', function(){
@@ -131,15 +122,17 @@ function start(){
     });
 
     function saveSendStatus(op){
-        db.serialize(function (){
-            db.run("INSERT INTO queue (op, state, time) VALUES ( ?, ? , datetime())", [op, JSON.stringify(queue.getState())], err);
+        var state = new QueueState({ op: op, state: JSON.stringify(queue.getState())});
+        state.save(function (err, state) {
+            if (err) return console.error(err);
         });
         io.emit('state', queue.getState());
     }
 
     function saveMessage(item){
-        db.serialize(function (){
-            db.run("INSERT INTO chat (sender, message) VALUES ( ?, ? )", [item.sender, item.message], err);
+        var message = new Message({sender: item.sender, message: item.message});
+        message.save(function(err, message){
+            if(err) return console.error(err);
         });
     }
 
@@ -148,14 +141,30 @@ function start(){
         queue.loadState(data);
     }
 
-    function loadchat(err, row){
-        chat.push(row);
+    function loadchat(docs){
+        chat = docs;
     }
 
     function err(data){
         console.log(data);
     }
+    
+    QueueState.find({}).sort('-time').limit(1).exec(function(err, doc) {
+        if(err) return console.error(err);
+        loaddata(err, doc[0]);        
+    });
+    
+    
+    Message.find({}).sort('-time').exec(function (err, docs) {
+       if(err) return console.error(err);
+       loadchat(docs);        
+    })
 
 }
- 
-start();
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function (callback) {
+    start(); 
+});
+

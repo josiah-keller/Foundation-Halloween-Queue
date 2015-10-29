@@ -37,7 +37,9 @@ HalloweenQueue.prototype.next = function(texting){
         this.nextGroup = null;
     }
     if(texting && this.nextGroup != null){
-        this.sendText(this.nextGroup);
+        //this.sendText(this.nextGroup);
+        //this.sendText(this.queue, 'There is one group ahead of you. Please gather your group and get ready to enter the maze!')
+        
     }
 }
 
@@ -58,7 +60,7 @@ HalloweenQueue.prototype.back = function(){
 }
 
 HalloweenQueue.prototype.sendReminderText = function(){
-    this.sendText(this.nextGroup);
+    //this.sendText(this.nextGroup, 'Your group is next in the Haunted Maze! Please come to the entrance!');
 }
 
 HalloweenQueue.prototype.add = function(group){
@@ -99,9 +101,9 @@ HalloweenQueue.prototype.loadState = function(state){
     this.mazeStatus = state.mazeStatus;
 }
 
-HalloweenQueue.prototype.sendText = function(group){
+HalloweenQueue.prototype.sendText = function(group, message){
     var phoneNumber = "1" + group.phoneNumber.split("-").join('');
-    nexmo.sendTextMessage("12105190253",phoneNumber,'Your group is next in the Haunted Maze! Please come to the entrance!',null,this.errorCallback);
+    nexmo.sendTextMessage("12105190253",phoneNumber,message,null,this.errorCallback);
 }
 
 exports.HalloweenQueue = HalloweenQueue;
