@@ -15,10 +15,11 @@ to the initialize function in queue.js. Nexmo is not free so if you find a diffe
 swap services in queue.js;
 
 ## Hosting
-Last year I used RedHat OpenShift to host the app. The free tier was good enough for our purposes.
+I have used RedHat OpenShift to host the app in the past. The free tier was good enough for our purposes.
 
 ## Users
-accounts.json contains the user accounts and passwords that are initially setup for the system. Feel free to change them to whatever you want.
+accounts.json contains the user accounts and passwords that are initially setup for the system. Feel free to change them to whatever you want. 
+This is by no means secure authentication.
 
 There are only 3 permissions groups which change which parts of the site you can use. They are:
 1. admin
