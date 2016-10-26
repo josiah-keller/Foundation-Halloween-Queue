@@ -9,7 +9,6 @@ define(function(require) {
         var self = this;
 
         app.data.on("state", function(data){
-            console.log('state change', data);
             self.currentGroup(data.currentGroup);
             self.nextGroup(data.nextGroup);
             self.queuedGroups(data.queue);
@@ -62,7 +61,6 @@ define(function(require) {
                     group.phoneNumber = data.phoneNumber();
                     group.groupSize = data.groupSize();
                     group.id = data.id;
-                    console.log(group);
                     app.data.emit("edit group", group);
                 }
             });

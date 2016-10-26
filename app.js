@@ -137,8 +137,10 @@ function start(){
     }
 
     function loaddata(err, data){
-        data = JSON.parse(data.state)
-        queue.loadState(data);
+        if(data) {
+            data = JSON.parse(data.state)
+            queue.loadState(data);
+        }
     }
 
     function loadchat(docs){

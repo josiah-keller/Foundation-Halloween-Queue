@@ -1,6 +1,6 @@
 var nexmo = require('easynexmo');
 
-nexmo.initialize('ea0e8d24','7ee09e56','https',false);
+nexmo.initialize('KEY','SECRET', false);
 
 var HalloweenQueue = function(io){
     this.queue = [];
@@ -10,12 +10,10 @@ var HalloweenQueue = function(io){
     this.mazeStatus = 'good';
     this.errorCallback = function (err, message){
         if(err){
-            //console.log(err);
             io.emit("error", err);
         } 
         else{
             if(message.messages[0]['error-text']){
-                console.log("Here")
                 io.emit("error", message.messages[0]['error-text']);
             }
         }
