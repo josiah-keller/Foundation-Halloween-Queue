@@ -1,7 +1,7 @@
-# Halloween Queue
+# Foundation Halloween Open House Queue
 
-A queueing system that notifies groups through text using [Nexmo](https://www.nexmo.com/)
-using Node.js, Durandal.js, and MongoDB
+A queueing system that notifies groups through text using [Nexmo](https://www.nexmo.com/).
+Built using Node.js, Durandal.js, and MongoDB
 
 ## Installation
 
