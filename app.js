@@ -1,18 +1,18 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var bodyParser = require('body-parser');
-var uuid = require('uuid');
+const express = require('express');
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const bodyParser = require('body-parser');
+const uuid = require('uuid');
 
-var accounts = require('./accounts.json');
+const accounts = require('./accounts.json');
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 
-var HalloweenQueue = require('./queue.js').HalloweenQueue;
+const HalloweenQueue = require('./queue.js').HalloweenQueue;
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded() );
