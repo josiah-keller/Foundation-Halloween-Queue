@@ -46,7 +46,7 @@ define(function(require) {
         
         self.activate = function(){
             if(app.permissions =="admin"){
-                app.data.emit("getDB");
+                app.data.emit("getDB", "maze");
             }else{
                 app.showMessage("Access Denied");
                 router.navigate("");

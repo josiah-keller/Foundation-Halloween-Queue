@@ -9,10 +9,10 @@ define(function(require) {
         var self = this;
 
         app.data.on("state", function(data){
-            self.currentGroup(data.currentGroup);
-            self.nextGroup(data.nextGroup);
-            self.queuedGroups(data.queue);
-            self.mazeStatus(data.mazeStatus);
+            self.currentGroup(data.maze.currentGroup);
+            self.nextGroup(data.maze.nextGroup);
+            self.queuedGroups(data.maze.queue);
+            self.mazeStatus(data.maze.status);
         });
 
         self.userPermissions = app.permissions;
@@ -27,14 +27,14 @@ define(function(require) {
         self.nextGroup = ko.observable();
         self.queuedGroups = ko.observableArray();
         
-        self.mazeStatus = ko.observable('stop');
+        self.mazeStatus = ko.observable("stop");
         
         self.mazeStatusStop = function () {
-            app.data.emit("mazeStatus",'stop');
+            app.data.emit("status", "maze", "stop");
         };
         
         self.mazeStatusGood = function () {
-            app.data.emit("mazeStatus",'good');
+            app.data.emit("status", "maze", "good");
         }
 
         self.addGroup = function () {
@@ -44,13 +44,13 @@ define(function(require) {
                     group.name = data.name();
                     group.phoneNumber = data.phoneNumber();
                     group.groupSize = data.groupSize();
-                    app.data.emit("add group", group);
+                    app.data.emit("add group", "maze", group);
                 }
             });
         };
         
         self.removeGroup = function (index) {
-            app.data.emit("remove group",index());
+            app.data.emit("remove group", "maze", index());
         };
 
         self.editGroup = function(group){
@@ -61,22 +61,22 @@ define(function(require) {
                     group.phoneNumber = data.phoneNumber();
                     group.groupSize = data.groupSize();
                     group.id = data.id;
-                    app.data.emit("edit group", group);
+                    app.data.emit("edit group", "maze", group);
                 }
             });
         }
         
         self.sendGroup = function () {
-            app.data.emit("next", true);
-            app.data.emit("mazeStatus",'warn');
+            app.data.emit("status", "maze", "warn");
+            app.data.emit("next", "maze", true);
         };
         
         self.shiftGroupsUp = function () {
-            app.data.emit("next", false);
+            app.data.emit("next", "maze", false);
         };
         
         self.shiftGroupsDown = function () {
-            app.data.emit("back", false);
+            app.data.emit("back", "maze", false);
         };
 
         self.notifyGroup = function () {
@@ -96,7 +96,7 @@ define(function(require) {
                     notifyAlert.addClass('fadeOutUp');
                 });
             }
-            app.data.emit("send reminder text");
+            app.data.emit("send reminder text", "maze");
         };
         
         self.showIcons = function (data, event) {

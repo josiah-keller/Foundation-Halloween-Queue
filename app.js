@@ -10,7 +10,9 @@ const accounts = require('./accounts.json');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 
-const HalloweenQueue = require('./queue.js').HalloweenQueue;
+const QueueManager = require("./queue-manager");
+const Queue = require("./queue");
+// const HalloweenQueue = require('./queue.js').HalloweenQueue;
 
 const port = process.env.PORT || 3000;
 
@@ -20,11 +22,14 @@ app.use( bodyParser.urlencoded() );
 app.use('/', express.static(__dirname+'/public'));
 
 function start(){
-    
     var QueueState = require('./models/QueueState.model');
     var Message = require('./models/message.model');
 
-    var queue = new HalloweenQueue(io);
+    var mazeQueue = new Queue(io);
+    var queueManager = new QueueManager({
+        maze: mazeQueue
+    });
+
     var chat = [];
 
     app.post('/login', function(req,res){
@@ -50,46 +55,46 @@ function start(){
             console.log('user disconnected');
         });
 
-        socket.on('add group', function(group){ //add group
+        socket.on('add group', (queueName, group) => { //add group
             group.id = uuid.v1();
-            queue.add(group);
+            queueManager.queues[queueName].add(group);
             saveSendStatus('ADD');
         });
 
-        socket.on('edit group', function(group){
-            queue.edit(group);
+        socket.on('edit group', (queueName, group) => {
+            queueManager.queues[queueName].update(group);
             saveSendStatus('EDIT');
         });
 
-        socket.on('remove group', function(index){// remove group
-            queue.remove(index);
+        socket.on('remove group', (queueName, index) => { // remove group
+            queueManager.queues[queueName].remove(index);
             saveSendStatus('REMOVE');
         });
 
-        socket.on('next', function(texting){//notify and move groups
-            queue.next(texting);
+        socket.on('next', (queueName, shouldText) => { //notify and move groups
+            queueManager.queues[queueName].next(shouldText);
             saveSendStatus('NEXT');
         });
 
-        socket.on('back', function(){
-            queue.back();
+        socket.on('back', (queueName) => {
+            queueManager.queues[queueName].previous();
             saveSendStatus('BACK');
         });
 
-        socket.on('send reminder text', function(){
-            queue.sendReminderText();
+        socket.on('send reminder text', (queueName) => {
+            queueManager.queues[queueName].sendReminderText();
         });
 
-        socket.on('mazeStatus', function(state){
-            queue.setMazeStatus(state);
-            saveSendStatus('MAZE '+state);
-        })
-
-        socket.on('getState', function(){//get current status
-            socket.emit('state', queue.getState());
+        socket.on('status', (queueName, status) => {
+            queueManager.queues[queueName].setStatus(status);
+            saveSendStatus('STATUS ' + status);
         });
 
-        socket.on('getDB', function(){            
+        socket.on('getState', () => { //get current status
+            socket.emit('state', queueManager.getState());
+        });
+
+        socket.on('getDB', () => {            
             QueueState.find({}).sort('+time').exec( function(err, docs) {
                 if (err) return console.error(err);
                 console.log('getDB');
@@ -97,12 +102,12 @@ function start(){
             });
         });
 
-        socket.on('restore', function(rowid){
+        socket.on('restore', (rowid) => {
             console.log(rowid);
              QueueState.find({}).sort('+time').skip(rowid).limit(1).exec(function(err, doc) {
                  console.log(doc);
                  loaddata(err, doc[0]);
-                 saveSendStatus("RESTORE "+rowid);
+                 saveSendStatus("RESTORE " + rowid);
              });
         });
 
@@ -122,11 +127,11 @@ function start(){
     });
 
     function saveSendStatus(op){
-        var state = new QueueState({ op: op, state: JSON.stringify(queue.getState())});
+        var state = new QueueState({ op: op, state: JSON.stringify(queueManager.getState())});
         state.save(function (err, state) {
             if (err) return console.error(err);
         });
-        io.emit('state', queue.getState());
+        io.emit('state', queueManager.getState());
     }
 
     function saveMessage(item){
@@ -138,8 +143,8 @@ function start(){
 
     function loaddata(err, data){
         if(data) {
-            data = JSON.parse(data.state)
-            queue.loadState(data);
+            data = JSON.parse(data.state);
+            queueManager.loadState(data);
         }
     }
 
@@ -156,12 +161,10 @@ function start(){
         loaddata(err, doc[0]);        
     });
     
-    
     Message.find({}).sort('-time').exec(function (err, docs) {
        if(err) return console.error(err);
        loadchat(docs);        
-    })
-
+    });
 }
 
 var db = mongoose.connection;
