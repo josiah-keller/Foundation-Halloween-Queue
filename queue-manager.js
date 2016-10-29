@@ -10,6 +10,7 @@ class QueueManager {
     }
     loadState(state) {
         Object.keys(this.queues).forEach((queueName) => {
+            if (! state.hasOwnProperty(queueName)) return; // Skip if previous state doesn't include queue
             this.queues[queueName].loadState(state[queueName]);
         });
     }
