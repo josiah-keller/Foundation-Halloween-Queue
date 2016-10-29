@@ -24,7 +24,7 @@
         <br/><br/><br/>
         <div id="currentGroup" class="panel panel-default">
             <div class="panel-heading">
-                <h1 class="panel-title">Current Group:</h1>
+                <span class="panel-title">Current Group:</span>
             </div>
             <ul class="list-group panel-body">
                 <!-- ko if: currentGroup() -->
@@ -65,7 +65,7 @@
         </div>
         <div id="queuedGroups" class="panel panel-default">
             <div class="panel-heading">
-                <h1 class="panel-title">Queued Groups:</h1>
+                <span class="panel-title">Queued Groups:</span>
             </div>
             <ul class="list-group panel-body" data-bind="foreach: queuedGroups">
                 <li class="list-group-item col-sm-12" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
