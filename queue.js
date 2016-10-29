@@ -49,8 +49,8 @@ class Queue {
         this.queue.splice(index, 1);
     }
     update(group) {
-        if (this.currentGroup.id === group.id) return this.currentGroup = group;
-        if (this.nextGroup.id === group.id) return this.nextGroup = group;
+        if (this.currentGroup && this.currentGroup.id === group.id) return this.currentGroup = group;
+        if (this.nextGroup && this.nextGroup.id === group.id) return this.nextGroup = group;
 
         let index = this.queue.findIndex(g => g.id === group.id);
         this.queue[index] = group;
