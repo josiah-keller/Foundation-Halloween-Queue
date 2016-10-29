@@ -1,9 +1,4 @@
-h1, h2, h3, h4 {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.list-group-item h4 {
+list-group-item h4 {
     margin-right: 20px !important;
 }
 
@@ -12,50 +7,84 @@ h1, h2, h3, h4 {
 }
 
 #display {
-	height: 100%;
-	width: 100%;
-	color: #E5E583;
-	overflow-x: hidden;
-  	overflow-y: hidden;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.display-title {
+    margin: 50px;
+    color: white;
+}
+.display-count {
+    font-size: 24px;
+}
+.display-list {
+    font-size: 32px;
+    color: white;
+    margin: 50px;
+    counter-reset: li;
+    padding: 0px;
+}
+.display-list > li {
+    position: relative;
+    margin: 0px 0px 10px 2em;
+    list-style: none;
+}
+.display-list > li::before {
+    content: counter(li);
+    counter-increment: li;
+    position: absolute;
+    left: -2em;
+    box-sizing: border-box;
+    width: 2em;
+    font-style: italic;
+    font-size: 0.9em;
+    opacity: 0.5;
 }
 
-img.bg {
-  /* Set rules to fill background */
-  min-height: 100%;
-  min-width: 1024px;
-	
-  /* Set up proportionate scaling */
-  width: 100%;
-  height: auto;
-	
-  /* Set up positioning */
-  position: fixed;
-  top: 0;
-  left: 0;
+#maze-display {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 50%;
+    height: 100%;
+    background-image: url(/images/maze-bg.jpg);
+    background-size: cover;
+    z-index: 4;
+}
+#maze-display h1 {
+    color: #CF6124;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 44px;
 }
 
-@media screen and (max-width: 1024px) { /* Specific to this particular image */
-  img.bg {
-    left: 50%;
-    margin-left: -512px;   /* 50% */
-  }
+#zombie-display {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 50%;
+    height: 100%;
+    background-image: url(/images/zombie-bg.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-color: black;
+    z-index: 4;
 }
 
-#display-list {
-	margin-left: 50px;
-	margin-top: 125px;
+#display-overflow-mask {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.0) 0%,rgba(0, 0, 0, 1) 100%);
+    z-index: 5;
 }
 
-#display-list2 {
-	margin-top: 165px;
-}
-
-.display-row{
-	margin-right: 15px;
-	margin-left: 15px;
-}
-
-body{
+body {
 	height: 100%;
 	width: 100%;
 }

@@ -1,16 +1,17 @@
 <div id="display">
-	<img class="bg" src="/images/Boogie.jpg"></img>
-	<div id="display-list" class="col-lg-3">
-		<h1>Next Groups:</h1>
-		<div data-bind="foreach: queuedGroups">
-			<br/>
-			<h2 data-bind="text: $parent.getQueuedGroupName($index())"></h2>
-		</div>
-	</div>
-	<div id="display-list2" class="col-lg-3">
-		<div data-bind="foreach: queuedGroups2">
-			<br/>
-			<h2 data-bind="text: $parent.getQueuedGroup2Name($index())"></h2>
-		</div>
-	</div>
+    <div id="maze-display">
+        <div class="display-title">
+            <h1>Foundation Haunted Maze</h1>
+            <p class="display-count"><span data-bind="text: mazeQueue().length"></span> groups in queue</p>
+        </div>
+        <ol class="display-list" data-bind="foreach: mazeQueue">
+            <li>
+                <span data-bind="text: name"></span>
+            </li>
+        </ol>
+    </div>
+    <div id="zombie-display">
+
+    </div>
+    <div id="display-overflow-mask"></div>
 </div>
