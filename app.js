@@ -25,9 +25,10 @@ function start(){
     var QueueState = require('./models/QueueState.model');
     var Message = require('./models/message.model');
 
-    var mazeQueue = new Queue(io);
+    var mazeQueue = new Queue(), zombieQueue = new Queue();
     var queueManager = new QueueManager({
-        maze: mazeQueue
+        maze: mazeQueue,
+        zombie: zombieQueue
     });
 
     var chat = [];

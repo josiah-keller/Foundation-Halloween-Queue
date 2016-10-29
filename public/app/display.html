@@ -11,7 +11,14 @@
         </ol>
     </div>
     <div id="zombie-display">
-
+        <div class="display-title">
+            <p class="display-count"><span data-bind="text: zombieQueue().length"></span> groups in queue</p>
+        </div>
+        <ol class="display-list" data-bind="foreach: zombieQueue">
+            <li>
+                <span data-bind="text: name"></span>
+            </li>
+        </ol>
     </div>
     <div id="display-overflow-mask"></div>
 </div>

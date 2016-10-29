@@ -5,8 +5,9 @@ define(function(require) {
     require('../lib/bootstrap/js/bootstrap');
 
     var self = {
-
-    }
+        userPermissions: app.permissions,
+        username: app.username
+    };
 
     //Context for showing bootstrap modal
     dialog.addContext('bootstrap', {

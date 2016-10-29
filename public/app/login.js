@@ -25,6 +25,7 @@ define(function(require) {
                     sessionStorage.password = user.password;
                     app.authenticated(true);
                     app.permissions = data.permissions;
+					app.username = sessionStorage.username;
     				router.navigate("/");
     			}
     		}).fail(function(err){

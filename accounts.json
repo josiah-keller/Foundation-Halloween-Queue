@@ -7,14 +7,26 @@
 	},
 	{
 		"id": 2,
-		"username":"Downstairs",
+		"username":"Maze",
 		"password":"password",
-		"permissions": "downstairs"
+		"permissions": "maze"
 	},
 	{
 		"id": 3,
-		"username":"Upstairs",
+		"username":"Zombies",
 		"password":"password",
-		"permissions": "upstairs"
+		"permissions": "zombies"
+	},
+	{
+		"id": 4,
+		"username": "FoundationKiosk",
+		"password": "password",
+		"permissions": "kiosk"
+	},
+	{
+		"id": 5,
+		"username": "BrohoKiosk",
+		"password": "password",
+		"permissions": "kiosk"
 	}
 ]

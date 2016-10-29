@@ -6,6 +6,10 @@ list-group-item h4 {
     padding: 15px !important;
 }
 
+.queue h1 {
+    margin-left: 15px;
+}
+
 #display {
     height: 100%;
     width: 100%;
@@ -72,6 +76,9 @@ list-group-item h4 {
     background-position: top center;
     background-color: black;
     z-index: 4;
+}
+#zombie-display .display-title {
+    margin-top: 150px;
 }
 
 #display-overflow-mask {

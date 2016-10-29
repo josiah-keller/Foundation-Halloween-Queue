@@ -19,6 +19,7 @@ define(function (require) {
                     if(data.authenticated == true){
                         app.authenticated(true);
                         app.permissions = data.permissions;
+                        app.username = sessionStorage.username;
                     }
                 }).fail(function(err){
                     console.log(err);
@@ -50,12 +51,10 @@ define(function (require) {
 
         logout: function(){
             sessionStorage.clear();
-            app.authenticated(false);
-            app.permissions = null;
             router.navigate('login');
+            location.reload();
         }
     };
 
-    console.log(self);
     return self;
 });

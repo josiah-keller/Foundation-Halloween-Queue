@@ -1,23 +1,24 @@
-<div id="queue">
+<div class="queue">
+    <h1>Queue for: <span data-bind="text: queueName"></span></h1>
     <div class="text-center">
-        <!-- ko if: userPermissions == 'downstairs' || userPermissions == 'admin' -->
-        <button class="btn btn-danger" data-bind="click: mazeStatusStop">STOP</button>
+        <!-- ko if: userPermissions == 'maze' || userPermissions == 'admin' -->
+        <button class="btn btn-danger" data-bind="click: queueStatusStop">STOP</button>
         <!-- /ko -->
         <span class="fa-stack fa-lg fa-4x">
-            <!-- ko ifnot: mazeStatus() == 'stop' -->
-            <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':mazeStatus()=='good','text-warning':mazeStatus()=='warn'}"></i>
-            <i class="fa fa-stack-1x fa-inverse" data-bind="css: {'fa-thumbs-o-up':mazeStatus()=='good','fa-spin fa-cog':mazeStatus()=='warn'}"></i>
+            <!-- ko ifnot: queueStatus() == 'stop' -->
+            <i class="fa fa-circle fa-stack-2x" data-bind="css: {'text-success':queueStatus()=='good','text-warning':queueStatus()=='warn'}"></i>
+            <i class="fa fa-stack-1x fa-inverse" data-bind="css: {'fa-thumbs-o-up':queueStatus()=='good','fa-spin fa-cog':queueStatus()=='warn'}"></i>
             <!-- /ko -->
-            <!-- ko if: mazeStatus() == 'stop' -->
+            <!-- ko if: queueStatus() == 'stop' -->
             <i class="fa fa-ban fa-stack-2x text-danger"></i>
             <!-- /ko -->
         </span>
-        <!-- ko if: userPermissions == 'downstairs' || userPermissions == 'admin' -->
-        <button class="btn btn-success" data-bind="click: mazeStatusGood">GOOD</button>
+        <!-- ko if: userPermissions == 'maze' || userPermissions == 'admin' -->
+        <button class="btn btn-success" data-bind="click: queueStatusGood">GOOD</button>
         <!-- /ko -->
     </div>
-    <div class="col-sm-9" data-bind="css:{'col-sm-9':userPermissions == 'admin' || userPermissions == 'upstairs', 'col-sm-12':userPermissions == 'downstairs'}">
-        <!-- ko if: userPermissions == 'upstairs' || userPermissions == 'admin' -->
+    <div class="col-sm-9" data-bind="css:{'col-sm-9':userPermissions == 'admin' || userPermissions == 'kiosk', 'col-sm-12':userPermissions == 'maze'}">
+        <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
         <button class="btn btn-primary fa-2x pull-left" data-bind="click: addGroup"><i class="fa fa-group"></i> Add Group</button>
         <!-- /ko -->
         <br/><br/><br/>
@@ -30,7 +31,7 @@
                 <li class="list-group-item col-sm-12">
                     <h4 class="col-sm-2" data-bind="text: currentGroup().name"></h4>
                     <h4 class="col-sm-2" data-bind="text: $root.groupDisplay(currentGroup().groupSize)"></h4>
-                    <!-- ko if: userPermissions == 'upstairs' || userPermissions == 'admin' -->
+                    <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
                     <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
                     <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
                     <h4 class="pull-right" data-bind="text: currentGroup().phoneNumber"></h4>
@@ -43,7 +44,7 @@
             <div class="panel-heading">
                 <span class="panel-title">
                     Next Group:
-                    <!-- ko if: nextGroup() && (userPermissions == 'upstairs' || userPermissions == 'admin') -->
+                    <!-- ko if: nextGroup() && (userPermissions == 'kiosk' || userPermissions == 'admin') -->
                     <i class="fa fa-bell-o btn btn-primary pull-right" data-bind="click: notifyGroup"> Notify Group</i>
                     <!-- /ko -->
                 </span>
@@ -53,7 +54,7 @@
                 <li class="list-group-item col-sm-12">
                     <h4 class="col-sm-2" data-bind="text: nextGroup().name"></h4>
                     <h4 class="col-sm-2" data-bind="text: $root.groupDisplay(nextGroup().groupSize)"></h4>
-                    <!-- ko if: userPermissions == 'upstairs' || userPermissions == 'admin' -->
+                    <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
                     <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
                     <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
                     <h4 class="pull-right" data-bind="text: nextGroup().phoneNumber"></h4>
@@ -70,7 +71,7 @@
                 <li class="list-group-item col-sm-12" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
                     <h4 class="col-sm-2" data-bind="text: name"></h4>
                     <h4 class="col-sm-2" data-bind="text: $root.groupDisplay(groupSize)"></h4>
-                    <!-- ko if: $root.userPermissions == 'upstairs' || $root.userPermissions == 'admin' -->
+                    <!-- ko if: $root.userPermissions == 'kiosk' || $root.userPermissions == 'admin' -->
                     <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: function(){$root.removeGroup($index)}"></i>
                     <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
                     <h4 class="pull-right" data-bind="text: phoneNumber"></h4>
@@ -79,9 +80,9 @@
             </ul>
         </div>
     </div>
-    <!-- ko if: userPermissions == 'upstairs' || userPermissions == 'admin' -->
+    <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
     <div class="col-sm-3 text-center">
-        <button class="btn btn-success fa-2x" data-bind="click: sendGroup, disable: mazeStatus()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
+        <button class="btn btn-success fa-2x" data-bind="click: sendGroup, disable: queueStatus()!='good' || nextGroup() == null">Send Group <i class="fa fa-chevron-right"></i></button>
         <br/><br/>
         <button class="btn btn-primary" data-bind="click: shiftGroupsUp"><i class="fa fa-2x fa-chevron-up"></i><h4>Shift Groups</h4><h6>(No Notification)</h6></button>
         <br/><br/>
