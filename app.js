@@ -8,12 +8,12 @@ const uuid = require('uuid');
 const accounts = require('./accounts.json');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://168.62.226.135/test');
 
 const QueueManager = require("./queue-manager");
 const Queue = require("./queue");
 
-const port = process.env.PORT || 3000;
+const port = process.env.port || 3000;
 
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded() );
