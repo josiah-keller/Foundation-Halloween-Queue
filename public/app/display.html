@@ -5,8 +5,8 @@
             <p class="display-count"><span data-bind="text: mazeQueue().length"></span> groups in queue</p>
         </div>
         <ol class="display-list" data-bind="foreach: mazeQueue">
-            <li>
-                <span data-bind="text: name"></span>
+            <li data-bind="css: { 'pending': pending }">
+                <span data-bind="text: $root.nameDisplay(name, pending)"></span>
             </li>
         </ol>
     </div>
@@ -15,8 +15,8 @@
             <p class="display-count"><span data-bind="text: zombieQueue().length"></span> groups in queue</p>
         </div>
         <ol class="display-list" data-bind="foreach: zombieQueue">
-            <li>
-                <span data-bind="text: name"></span>
+            <li data-bind="css: { 'pending': pending }">
+                <span data-bind="text: $root.nameDisplay(name, pending)"></span>
             </li>
         </ol>
     </div>
