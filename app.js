@@ -71,6 +71,7 @@ function start(){
                 group.next = configuration[1];
                 queueManager.queues[configuration[0]].add(group);
 
+                placeholder.next = null;
                 placeholder.pending = true;
                 queueManager.queues[configuration[1]].add(placeholder);
             }
@@ -85,17 +86,22 @@ function start(){
                 // Removing placeholder
                 queueManager.queues[group.next].removeById(group.id);
                 newGroup.next = null;
+                newGroup.pending = false;
                 queueManager.queues[queueName].update(newGroup);
             } else if (! group.next && configuration.length === 2) {
                 // Adding placeholder
                 var placeholder = Object.assign({}, newGroup);
 
                 newGroup.next = configuration[1];
+                newGroup.pending = false;
                 queueManager.queues[configuration[0]].update(newGroup);
 
+                placeholder.next = null;
                 placeholder.pending = true;
                 queueManager.queues[configuration[1]].add(placeholder);
-            } else if (group.configuration.length === configuration.length) {
+            } else if (newGroup.configuration.split("_").length === configuration.length) {
+                newGroup.next = group.next;
+                newGroup.pending = false;
                 queueManager.queues[queueName].update(newGroup);
                 if (group.next) {
                     // Update placeholder to match

@@ -42,7 +42,7 @@ define(function(require) {
         };
 
         self.addGroup = function () {
-            dialog.show("../addGroup", { configuration: self.queueName }, 'bootstrap').then(function (data) {
+            dialog.show("../addGroup", { isNew: true, configuration: self.queueName }, 'bootstrap').then(function (data) {
                 if (data.createGroup) {
                     group = {};
                     group.name = data.name();

@@ -42,6 +42,20 @@ define(function(require) {
                 self.configuration(data.configuration);
                 previousLength = 12;
                 self.id = data.id;
+
+                self.isNew = !!data.isNew;
+                console.log("ISNEW", self.isNew);
+                // Hacky way to disallow reversing configuration order
+                if (! self.isNew) {
+                    if (data.configuration.split("_")[0] === "maze") {
+                        self.configurationOptions.splice(1, 1);
+                        self.configurationOptions.splice(2, 1);
+                    }
+                    if (data.configuration.split("_")[0] === "zombie") {
+                        self.configurationOptions.splice(0, 1);
+                        self.configurationOptions.splice(1, 1);
+                    }
+                }
             }
             self.phoneNumber.subscribe(function(value) {
                 var forward = value.length > previousLength;

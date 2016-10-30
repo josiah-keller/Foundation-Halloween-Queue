@@ -15,13 +15,14 @@
                 <input type="number" min="1" max="15" id="people" class="form-control" data-bind="value: groupSize">
             </div>
             <div class="form-group">
-                <label>Events Order:</label>
+                <label>Events Order</label>
                 <select class="form-control"
                         data-bind="options: configurationOptions,
                                    optionsText: 'label',
                                    optionsValue: 'id',
                                    value: configuration"></select>
             </div>
+            <p>Note: you cannot reverse a group's events order after the fact.</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger pull-left" data-bind="click: close">Cancel</button>
