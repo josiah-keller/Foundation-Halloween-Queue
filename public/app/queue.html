@@ -28,14 +28,16 @@
             </div>
             <ul class="list-group panel-body">
                 <!-- ko if: currentGroup() -->
-                <li class="list-group-item col-sm-12">
-                    <h4 class="col-sm-2" data-bind="text: currentGroup().name"></h4>
-                    <h4 class="col-sm-2" data-bind="text: $root.groupDisplay(currentGroup().groupSize)"></h4>
-                    <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
-                    <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
-                    <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
-                    <h4 class="pull-right" data-bind="text: currentGroup().phoneNumber"></h4>
-                    <!-- /ko -->
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-2" data-bind="text: currentGroup().name"></div>
+                        <div class="col-sm-2" data-bind="text: $root.groupDisplay(currentGroup().groupSize)"></div>
+                        <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
+                        <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
+                        <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
+                        <div class="pull-right" data-bind="text: currentGroup().phoneNumber"></div>
+                        <!-- /ko -->
+                    </div>
                 </li>
                 <!-- /ko -->
             </ul>
@@ -51,14 +53,16 @@
             </div>
             <ul class="list-group panel-body">
                 <!-- ko if: nextGroup() -->
-                <li class="list-group-item col-sm-12">
-                    <h4 class="col-sm-2" data-bind="text: nextGroup().name"></h4>
-                    <h4 class="col-sm-2" data-bind="text: $root.groupDisplay(nextGroup().groupSize)"></h4>
-                    <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
-                    <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
-                    <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
-                    <h4 class="pull-right" data-bind="text: nextGroup().phoneNumber"></h4>
-                    <!-- /ko -->
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-2" data-bind="text: nextGroup().name"></div>
+                        <div class="col-sm-2" data-bind="text: $root.groupDisplay(nextGroup().groupSize)"></div>
+                        <!-- ko if: userPermissions == 'kiosk' || userPermissions == 'admin' -->
+                        <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: removeGroup"></i>
+                        <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
+                        <div class="pull-right" data-bind="text: nextGroup().phoneNumber"></div>
+                        <!-- /ko -->
+                    </div>
                 </li>
                 <!-- /ko -->
             </ul>
@@ -68,14 +72,16 @@
                 <span class="panel-title">Queued Groups:</span>
             </div>
             <ul class="list-group panel-body" data-bind="foreach: queuedGroups">
-                <li class="list-group-item col-sm-12" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
-                    <h4 class="col-sm-2" data-bind="text: name"></h4>
-                    <h4 class="col-sm-2" data-bind="text: $root.groupDisplay(groupSize)"></h4>
-                    <!-- ko if: $root.userPermissions == 'kiosk' || $root.userPermissions == 'admin' -->
-                    <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: function(){$root.removeGroup($index)}"></i>
-                    <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
-                    <h4 class="pull-right" data-bind="text: phoneNumber"></h4>
-                    <!-- /ko -->
+                <li class="list-group-item" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
+                    <div class="row">
+                        <div class="col-sm-2" data-bind="text: name"></div>
+                        <div class="col-sm-2" data-bind="text: $root.groupDisplay(groupSize)"></div>
+                        <!-- ko if: $root.userPermissions == 'kiosk' || $root.userPermissions == 'admin' -->
+                        <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: function(){$root.removeGroup($index)}"></i>
+                        <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
+                        <div class="pull-right" data-bind="text: phoneNumber"></div>
+                        <!-- /ko -->
+                    </div>
                 </li>
             </ul>
         </div>
