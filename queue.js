@@ -40,8 +40,11 @@ class Queue {
             this.nextGroup = null;
         }
         if (shouldText) {
-            this.sendText(this.nextGroup, TextMessages.MESSAGE_NEXT);
-            this.sendText(this.queue[0], TextMessages.MESSAGE_ALMOST_NEXT);
+            // Text next group
+            if (this.nextGroup) this.sendText(this.nextGroup, TextMessages.MESSAGE_NEXT);
+            // Text second-to-next group that isn't pending
+            var nextNotPending = this.queue.find(g => !g.pending);
+            if (nextNotPending) this.sendText(nextNotPending, TextMessages.MESSAGE_ALMOST_NEXT);
         }
     }
     previous() {
