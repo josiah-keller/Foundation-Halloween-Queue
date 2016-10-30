@@ -11,6 +11,7 @@ define(function(require) {
         //self.queueName = "Loading...";
 
         app.data.on("state", function(data){
+            console.log("STATE", data);
             self.currentGroup(data[self.queueName].currentGroup);
             self.nextGroup(data[self.queueName].nextGroup);
             self.queuedGroups(data[self.queueName].queue);
@@ -38,15 +39,16 @@ define(function(require) {
         
         self.queueStatusGood = function () {
             app.data.emit("status", self.queueName, "good");
-        }
+        };
 
         self.addGroup = function () {
-            dialog.show("../addGroup", null, 'bootstrap').then(function (data) {
+            dialog.show("../addGroup", { configuration: self.queueName }, 'bootstrap').then(function (data) {
                 if (data.createGroup) {
                     group = {};
                     group.name = data.name();
                     group.phoneNumber = data.phoneNumber();
                     group.groupSize = data.groupSize();
+                    group.configuration = data.configuration();
                     app.data.emit("add group", self.queueName, group);
                 }
             });
@@ -63,6 +65,7 @@ define(function(require) {
                     group.name = data.name();
                     group.phoneNumber = data.phoneNumber();
                     group.groupSize = data.groupSize();
+                    group.configuration = data.configuration();
                     group.id = data.id;
                     app.data.emit("edit group", self.queueName, group);
                 }
@@ -121,7 +124,10 @@ define(function(require) {
             }else if (numPeople != null){
                 return numPeople + " people";
             }
-        }
+        };
+        self.nameDisplay = function(name, pending) {
+            return name + (pending ? " (pending)" : "");
+        };
 
         self.attached = function(){
             app.data.emit("getState");

@@ -74,9 +74,9 @@
             <ul class="list-group panel-body" data-bind="foreach: queuedGroups">
                 <li class="list-group-item" data-bind="event:{mouseover: $root.showIcons, mouseleave: $root.hideIcons }">
                     <div class="row">
-                        <div class="col-sm-2" data-bind="text: name"></div>
+                        <div class="col-sm-4" data-bind="text: $root.nameDisplay(name, pending)"></div>
                         <div class="col-sm-2" data-bind="text: $root.groupDisplay(groupSize)"></div>
-                        <!-- ko if: $root.userPermissions == 'kiosk' || $root.userPermissions == 'admin' -->
+                        <!-- ko if: ($root.userPermissions == 'kiosk' || $root.userPermissions == 'admin') && !pending -->
                         <i class="fa fa-times-circle fa-border pull-right animated invisible" data-bind="click: function(){$root.removeGroup($index)}"></i>
                         <i class="fa fa-pencil fa-border pull-right animated invisible" data-bind="click: $root.editGroup"></i>
                         <div class="pull-right" data-bind="text: phoneNumber"></div>

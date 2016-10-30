@@ -1,15 +1,27 @@
 <div class="modal-dialog modal-lg">
    <form class="modal-content" data-bind="submit: create">
         <h1 class="modal-header" data-bind="text: title"></h1>
-        <div class="modal-body form-group">
-            <label>Name</label>
-            <input type="text" id="name" class="form-control" data-bind="value: name" placeholder="Name" autocomplete="off" autofocus>
-            <br/>
-            <label>Phone Number</label>
-            <input type="text" id="phoneNumber" class="form-control" data-bind="value:phoneNumber,valueUpdate:'input'" placeholder="Phone Number" maxlength="12" autocomplete="off">
-            <br/>
-            <label>Number of People</label>
-            <input type="number" min="1" max="15" id="people" class="form-control" data-bind="value: groupSize">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="name" class="form-control" data-bind="value: name" placeholder="Name" autocomplete="off" autofocus>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="phoneNumber" class="form-control" data-bind="value:phoneNumber,valueUpdate:'input'" placeholder="Phone Number" maxlength="12" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Number of People</label>
+                <input type="number" min="1" max="15" id="people" class="form-control" data-bind="value: groupSize">
+            </div>
+            <div class="form-group">
+                <label>Events Order:</label>
+                <select class="form-control"
+                        data-bind="options: configurationOptions,
+                                   optionsText: 'label',
+                                   optionsValue: 'id',
+                                   value: configuration"></select>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger pull-left" data-bind="click: close">Cancel</button>

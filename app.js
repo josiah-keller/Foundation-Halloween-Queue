@@ -12,7 +12,6 @@ mongoose.connect('mongodb://localhost/test');
 
 const QueueManager = require("./queue-manager");
 const Queue = require("./queue");
-// const HalloweenQueue = require('./queue.js').HalloweenQueue;
 
 const port = process.env.PORT || 3000;
 
@@ -57,13 +56,55 @@ function start(){
         });
 
         socket.on('add group', (queueName, group) => { //add group
-            group.id = uuid.v1();
-            queueManager.queues[queueName].add(group);
+            var configuration = group.configuration.split("_");
+            if (configuration.length === 1) {
+                group.id = uuid.v1();
+                group.next = null;
+                group.pending = false;
+                queueManager.queues[configuration[0]].add(group);
+            } else {
+                group.id = uuid.v1();
+                group.next = null;
+                group.pending = false;
+                var placeholder = Object.assign({}, group);
+
+                group.next = configuration[1];
+                queueManager.queues[configuration[0]].add(group);
+
+                placeholder.pending = true;
+                queueManager.queues[configuration[1]].add(placeholder);
+            }
             saveSendStatus('ADD');
         });
 
-        socket.on('edit group', (queueName, group) => {
-            queueManager.queues[queueName].update(group);
+        socket.on('edit group', (queueName, newGroup) => {
+            var configuration = newGroup.configuration.split("_"),
+                group = queueManager.queues[queueName].find(newGroup.id);
+            
+            if (group.next && configuration.length === 1) {
+                // Removing placeholder
+                queueManager.queues[group.next].removeById(group.id);
+                newGroup.next = null;
+                queueManager.queues[queueName].update(newGroup);
+            } else if (! group.next && configuration.length === 2) {
+                // Adding placeholder
+                var placeholder = Object.assign({}, newGroup);
+
+                newGroup.next = configuration[1];
+                queueManager.queues[configuration[0]].update(newGroup);
+
+                placeholder.pending = true;
+                queueManager.queues[configuration[1]].add(placeholder);
+            } else if (group.configuration.length === configuration.length) {
+                queueManager.queues[queueName].update(newGroup);
+                if (group.next) {
+                    // Update placeholder to match
+                    var placeholder = Object.assign({}, newGroup);
+                    placeholder.next = null;
+                    placeholder.pending = true;
+                    queueManager.queues[configuration[1]].update(placeholder);
+                }
+            }
             saveSendStatus('EDIT');
         });
 

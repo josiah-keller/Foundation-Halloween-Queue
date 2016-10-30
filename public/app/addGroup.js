@@ -11,8 +11,16 @@ define(function(require) {
         self.name = ko.observable();
         self.phoneNumber = ko.observable();
         self.groupSize = ko.observable(1);
+        self.configuration = ko.observable();
+
         self.title = "Add Group";
         self.id = "";
+        self.configurationOptions = ko.observableArray([
+            { id: "maze", label: "Maze Only" },
+            { id: "zombie", label: "Zombie Only" },
+            { id: "maze_zombie", label: "Maze first, then Zombie" },
+            { id: "zombie_maze", label: "Zombie first, then Maze" }
+        ]);
         
         var previousLength = 0;
 
@@ -31,6 +39,7 @@ define(function(require) {
                 self.name(data.name);
                 self.phoneNumber(data.phoneNumber);
                 self.groupSize(data.groupSize);
+                self.configuration(data.configuration);
                 previousLength = 12;
                 self.id = data.id;
             }

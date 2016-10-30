@@ -46,7 +46,11 @@ class Queue {
         this.queue.push(group);
     }
     remove(index) {
+        if (index < 0) return;
         this.queue.splice(index, 1);
+    }
+    removeById(id) {
+        this.remove(this.queue.findIndex(g => g.id === id));
     }
     update(group) {
         if (this.currentGroup && this.currentGroup.id === group.id) return this.currentGroup = group;
@@ -54,6 +58,12 @@ class Queue {
 
         let index = this.queue.findIndex(g => g.id === group.id);
         this.queue[index] = group;
+    }
+    find(id) {
+        if (this.currentGroup && this.currentGroup.id === id) return this.currentGroup;
+        if (this.nextGroup && this.nextGroup.id === id) return this.nextGroup;
+
+        return this.queue.find(g => g.id === id);
     }
     setStatus(status) {
         this.status = status;
