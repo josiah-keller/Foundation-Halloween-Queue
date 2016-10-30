@@ -2,11 +2,11 @@
     <br/>
     <div class="row">
     	<div data-bind="css: { 'col-lg-6': userPermissions != 'admin', 'col-lg-12': userPermissions == 'admin' }">
-            <!-- ko if: username == 'FoundationKiosk' || userPermissions == 'admin' -->
+            <!-- ko if: username == 'FoundationKiosk' || username == 'Maze' || userPermissions == 'admin' -->
             <div data-bind="compose: { model: '../queue', activationData: 'maze' }, css: { 'col-md-6': userPermissions == 'admin' }">
             </div>
             <!-- /ko -->
-            <!-- ko if: username == 'BrohoKiosk' || userPermissions == 'admin' -->
+            <!-- ko if: username == 'BrohoKiosk' || username == 'Zombies' || userPermissions == 'admin' -->
             <div data-bind="compose: { model: '../queue', activationData: 'zombie' }, css: { 'col-md-6': userPermissions == 'admin' }">
             </div>
             <!-- /ko -->
