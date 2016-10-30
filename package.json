@@ -3,7 +3,7 @@
   "description": "Foundation Halloween Server",
   "version": "0.0.1",
   "main": "app.js",
-  "private": "true",
+  "private": true,
   "dependencies": {
     "body-parser": "1.15.2",
     "express": "4.14.0",
@@ -12,5 +12,8 @@
     "sqlite3": "3.1.7",
     "twilio": "^2.11.0",
     "uuid": "2.0.3"
+  },
+  "engines": {
+    "node": "6.9.1"
   }
 }
