@@ -1,6 +1,9 @@
 class QueueManager {
     constructor(queues) {
         this.queues = queues || {};
+        Object.keys(this.queues).forEach((queueName) => {
+            this.queues[queueName].queueManager = this;
+        });
     }
     getState() {
         return Object.keys(this.queues).reduce((state, queueName) => {

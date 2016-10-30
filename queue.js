@@ -7,10 +7,16 @@ class Queue {
         this.currentGroup = null;
         this.done = [];
         this.status = "good";
+        this.queueManager = null;
     }
     next(shouldText) {
         if (this.currentGroup) {
             this.done.push(this.currentGroup);
+            // Unlink placeholder
+            if (this.currentGroup.next) {
+                this.queueManager.queues[this.currentGroup.next].find(this.currentGroup.id).pending = false;
+                this.currentGroup.next = null;
+            }
         }
         if (this.nextGroup) {
             this.currentGroup = this.nextGroup;
@@ -37,7 +43,7 @@ class Queue {
     previous() {
         if (this.nextGroup) {
             // Don't leapfrog back over
-            this.nextGroup = this.queue.unshift()
+           this.queue.unshift(this.nextGroup);
         }
         if (this.currentGroup) {
             this.nextGroup = this.currentGroup;
