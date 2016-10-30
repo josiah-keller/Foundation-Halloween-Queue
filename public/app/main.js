@@ -24,7 +24,7 @@ define(function (require) {
    app.permissions = null;
 
    //app.url = "https://foundation-haunted-maze.herokuapp.com/login";
-   app.url = "http://localhost:3000/login";
+   app.url = "http://foundationqueue.azurewebsites.net/login";
 
    app.configurePlugins({
      router:true,
