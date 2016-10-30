@@ -18,7 +18,14 @@ class Queue {
             this.currentGroup = null;
         }
         if (this.queue.length > 0) {
-            this.nextGroup = this.queue.shift();
+            // Leapfrog over placeholders
+            // Causes placeholders to collect at the top of the queue until they're ready
+            let firstNotPendingIndex = this.queue.findIndex(g => !g.pending);
+            if (firstNotPendingIndex === -1) {
+                this.nextGroup = null;
+            } else {
+                this.nextGroup = (this.queue.splice(firstNotPendingIndex, 1))[0] || null;
+            }
         } else {
             this.nextGroup = null;
         }
@@ -29,7 +36,8 @@ class Queue {
     }
     previous() {
         if (this.nextGroup) {
-            this.queue.unshift(this.nextGroup);
+            // Don't leapfrog back over
+            this.nextGroup = this.queue.unshift()
         }
         if (this.currentGroup) {
             this.nextGroup = this.currentGroup;
