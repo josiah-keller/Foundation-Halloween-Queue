@@ -1,4 +1,6 @@
 const TextMessages = require("./text-messages");
+const apiKeys = require("./api-keys");
+const twilio = require("twilio");
 
 class Queue {
     constructor() {
@@ -8,6 +10,8 @@ class Queue {
         this.done = [];
         this.status = "good";
         this.queueManager = null;
+        
+        this.client = new twilio.RestClient(apiKeys.sid, apiKeys.authToken);
     }
     next(shouldText) {
         if (this.currentGroup) {
@@ -100,10 +104,23 @@ class Queue {
     }
 
     sendText(group, messageTemplate) {
+        let message = messageTemplate;
+        message = message.replace(new RegExp("{name}", "g"), group.name);
+        message = message.replace(new RegExp("{queueName}", "g"), group.queueName);
 
+        let phoneNumber = "1" + group.phoneNumber.replace(new RegExp("-", "g"), "");
+        this.client.messages.create({
+            body: message,
+            to: phoneNumber,
+            from: apiKeys.fromNumber
+        }, (err, message) => {
+            if (err) {
+                console.error(err.message);
+            }
+        });
     }
-    sendReminderText(group, messageTemplate) {
-        
+    remind() {
+        this.sendText(this.nextGroup, TextMessages.MESSAGE_REMINDER);
     }
 }
 

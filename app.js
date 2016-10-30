@@ -61,6 +61,7 @@ function start(){
                 group.id = uuid.v1();
                 group.next = null;
                 group.pending = false;
+                group.queueName = configuration[0];
                 queueManager.queues[configuration[0]].add(group);
             } else {
                 group.id = uuid.v1();
@@ -69,10 +70,12 @@ function start(){
                 var placeholder = Object.assign({}, group);
 
                 group.next = configuration[1];
+                group.queueName = configuration[0];
                 queueManager.queues[configuration[0]].add(group);
 
                 placeholder.next = null;
                 placeholder.pending = true;
+                placeholder.queueName = configuration[1];
                 queueManager.queues[configuration[1]].add(placeholder);
             }
             saveSendStatus('ADD');
@@ -87,6 +90,7 @@ function start(){
                 queueManager.queues[group.next].removeById(group.id);
                 newGroup.next = null;
                 newGroup.pending = false;
+                group.queueName = queueName;
                 queueManager.queues[queueName].update(newGroup);
             } else if (! group.next && configuration.length === 2) {
                 // Adding placeholder
@@ -94,20 +98,24 @@ function start(){
 
                 newGroup.next = configuration[1];
                 newGroup.pending = false;
+                group.queueName = configuration[0];
                 queueManager.queues[configuration[0]].update(newGroup);
 
                 placeholder.next = null;
                 placeholder.pending = true;
+                placeholder.queueName = configuration[1];
                 queueManager.queues[configuration[1]].add(placeholder);
             } else if (newGroup.configuration.split("_").length === configuration.length) {
                 newGroup.next = group.next;
                 newGroup.pending = false;
+                group.queueName = configuration[0];
                 queueManager.queues[queueName].update(newGroup);
                 if (group.next) {
                     // Update placeholder to match
                     var placeholder = Object.assign({}, newGroup);
                     placeholder.next = null;
                     placeholder.pending = true;
+                    placeholder.queueName = configuration[1];
                     queueManager.queues[configuration[1]].update(placeholder);
                 }
             }
@@ -130,7 +138,7 @@ function start(){
         });
 
         socket.on('send reminder text', (queueName) => {
-            queueManager.queues[queueName].sendReminderText();
+            queueManager.queues[queueName].remind();
         });
 
         socket.on('status', (queueName, status) => {
